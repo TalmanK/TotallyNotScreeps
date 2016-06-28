@@ -190,10 +190,12 @@ Population.prototype.Report =  function ()
 
     // Creep Distribution
     report.push('- Total Creeps: ' + this.creepDistribution.total);
-    for (var n in this.creepDistribution.roles)
+    var line = '';
+    for (let n in this.creepDistribution.roles)
     {
-        report.push('-     Role (' + n + '): ' + this.creepDistribution.roles[n])
+        line += ' (' + n + '): ' + this.creepDistribution.roles[n];
     }
+    report.push('-     Roles: ' )
 
     var n = this.getNextSpawn();
     if (n !== undefined)
