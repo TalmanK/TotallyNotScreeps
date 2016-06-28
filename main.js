@@ -10,7 +10,7 @@
 
 
 /** Load modules & References **/
-var cleanup = require('core.cleanup');
+var cleanup = require('core.Cleanup');
 var RoomController = require('control.Room');
 
 module.exports.loop = function () {
@@ -22,7 +22,7 @@ module.exports.loop = function () {
     for (var name in Game.rooms)
     {
        var roomController = new RoomController(Game.rooms[name]);
-       
+
        // Run it for now, should really dump them in an array
        roomController.run();
     }
