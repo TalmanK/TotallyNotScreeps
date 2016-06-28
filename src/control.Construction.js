@@ -39,6 +39,7 @@ Construction.prototype.run = function()
 Construction.prototype.PlanNextConstruction = function ()
 {
     // Build stuff based on room controller's upgrade level.
+    // Check for higher level stuff first, leave the lowlevel stuff for when we have time later on.
     console.log('Construction.Run: Planning next construction project.');
 
 
@@ -49,40 +50,6 @@ Construction.prototype.PlanNextConstruction = function ()
 
 
 
-    // Level 1 or higher
-    //      - Roads to Nearest source
-    //      - Roads to controller
-    if ( controllerLevel >= 1 )
-    {
-        // Test: build road from spawn to resource node
-
-        var targets = {};
-
-        // Order sources by range
-        for (var n in sources)
-        {
-            var range = spawn.pos.getRangeTo(sources[n]);
-            targets[range] = sources[n];
-        }
-
-        //
-        if (this.PlanRoad(spawn, sources[0])) {}
-        // this.PlanRoad(spawn, sources[1]);
-
-        // Test 3 : from spawn to room controller
-        // this.PlanRoad(spawn, controller);
-
-        // Test 4 : From resources to controller
-        else if (this.PlanRoad(sources[0], controller)){}
-        // this.PlanRoad(sources[1], controller);
-
-        // Test 5 : plan road around objects
-        else if(this.PlanRoadAround(spawn)) {}
-        else if(this.PlanRoadAround(controller)) {}
-
-
-    }
-
     // Level 2 or higher
     //      - Up to 5 Extensions (Near a road if possible)
     //      - a road around the spawn
@@ -90,18 +57,37 @@ Construction.prototype.PlanNextConstruction = function ()
     //      - Up to 5 containers (useful ?)
     if (controllerLevel >= 2 )
     {
-
+		// if (!this.PlanBuilding(STRUCTURE_EXTENSION))
     }
-/*
-    // Level 3 or higher
-    //      - a tower !!
-    if ( controllerLevel >= 3 )
+
+
+    // Level 1 or higher
+    //      - Roads to Nearest source
+    //      - Roads to controller
+    //		- Roads to the other sources (if there are any)
+    if ( controllerLevel >= 1 )
     {
 
+        // PlanRoad returns false if the road has already been built
+        // the if(!) construct should therefor only execute the next line if the previous has anready been done
+
+
+        if (!this.PlanRoad(spawn, sources[0])) 			// Test1: road from spawn to resource node
+		if (!this.PlanRoad(sources[0], controller))		// Test2: road from resource to controller
+		if (!this.PlanRoadAround(spawn))				// Test3: road around the spawn
+		if (!this.PlanRoadAround(controller))			// Test4: road around the controller
+        if (!this.PlanRoad(spawn, sources[1])) 			// Test5: road from spawn to resource node
+        if (!this.PlanRoad(spawn, sources[2])) 			// Test5: road from spawn to resource node
+
+        // Order sources by range
+        // var targets = {};
+		// for (var n in sources)
+        // {
+        //    var range = spawn.pos.getRangeTo(sources[n]);
+        //    targets[range] = sources[n];
+        // }
+
     }
-
-
-*/
 
 }
 
