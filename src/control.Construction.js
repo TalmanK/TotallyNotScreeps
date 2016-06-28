@@ -78,6 +78,8 @@ Construction.prototype.PlanNextConstruction = function ()
 		if (!this.PlanRoadAround(controller))			// Test4: road around the controller
         if (!this.PlanRoad(spawn, sources[1])) 			// Test5: road from spawn to resource node
         if (!this.PlanRoad(spawn, sources[2])) 			// Test5: road from spawn to resource node
+		{ } // Empty code block or it will not compile
+		    // That, or put a ; after the last entry
 
         // Order sources by range
         // var targets = {};

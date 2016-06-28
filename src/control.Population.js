@@ -217,16 +217,4 @@ module.exports = Population ;
 
 
 /*** Private functions below ***/
-function getCreepTypeInfo(spawn, creepRole, maxCost)
-{
-	var creepTypes = require('tmp.CreepTypes2');
 
-	for (let n in creepTypes)
-	{
-		var creepType = creepTypes[n];
-		if (creepType.roles.includes(creepRole))
-		{
-
-		}
-	}
-}
