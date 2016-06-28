@@ -28,7 +28,7 @@ var UnitNames =
       var lastNames = new Array("Adams","Bowden","Conway","Darden","Edwards","Flynn","Gilliam","Holiday","Ingram","Johnson","Kraemer","Hunter","McDonald","Nichols","Pierce","Sawyer","Saunders","Schmidt","Schroeder","Smith","Douglas","Ward","Watson","Williams","Winters","Yeager","Ford","Forman","Dixon","Clark","Churchill","Brown","Blum","Anderson","Black","Cavenaugh","Hampton","Jenkins","Prichard")
 
         var firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-        var lastName = firstNames[Math.floor(Math.random() * lastNames.length)];
+        var lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
 
         return firstName + ' ' + lastName;
     }
