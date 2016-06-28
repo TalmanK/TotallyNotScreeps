@@ -15,7 +15,7 @@ var roleHarvester =
     /** @param {Creep} creep **/
     run: function(creep)
     {
-        var states = require('core.states');
+        var states = require('core.States');
 
         var nextState = '';
         var altState = '';

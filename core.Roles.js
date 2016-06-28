@@ -8,11 +8,11 @@
  */
 
 module.exports = {
-    upgrader: require('role.upgrader'),
-    harvester: require('role.harvester'),
-    builder: require('role.builder'),
-    spawner: require('role.spawner'),
-    miner: require('role.miner'),
-    archer: require('role.archer'),
-    hauler: require('role.hauler')
+    upgrader: require('role.Upgrader'),
+    harvester: require('role.Harvester'),
+    builder: require('role.Builder'),
+    spawner: require('role.Spawner'),
+    miner: require('role.Miner'),
+    archer: require('role.Archer'),
+    hauler: require('role.Hauler')
 };
