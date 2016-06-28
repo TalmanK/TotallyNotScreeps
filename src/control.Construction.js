@@ -20,7 +20,7 @@ function Construction(room)
 
 }
 
-Construction.prototype.run = function()
+Construction.run = function()
 {
     // Do construction stuff - but only if we have builders and are not already building
     if ( this.builders.length > 0  && this.activeConstructionSites.length == 0 )
@@ -36,7 +36,7 @@ Construction.prototype.run = function()
     }
 }
 
-Construction.prototype.PlanNextConstruction = function ()
+Construction.PlanNextConstruction = function ()
 {
     // Build stuff based on room controller's upgrade level.
     console.log('Construction.Run: Planning next construction project.');
@@ -105,7 +105,7 @@ Construction.prototype.PlanNextConstruction = function ()
 
 }
 
-Construction.prototype.PlanRoad = function(start, end)
+Construction.PlanRoad = function(start, end)
 {
     //Check if road is already known
     var roadIsKnown = false;
@@ -144,7 +144,7 @@ Construction.prototype.PlanRoad = function(start, end)
     return (!roadIsKnown);
 }
 
-Construction.prototype.PlanRoadAround = function(roomObject)
+Construction.PlanRoadAround = function(roomObject)
 {
     //Check if road is already known
     var roadIsKnown = false;
@@ -177,7 +177,7 @@ Construction.prototype.PlanRoadAround = function(roomObject)
     }
 }
 
-Construction.prototype.BuildNextConstructionSite = function ()
+Construction.BuildNextConstructionSite = function ()
 {
     if (this.room.memory.roomInfo.futureConstructionSites.length > 0)
     {
@@ -188,7 +188,7 @@ Construction.prototype.BuildNextConstructionSite = function ()
     }
 }
 
-Construction.prototype.Report = function()
+Construction.Report = function()
 {
     // Build a population Report
     var report = new Array;
