@@ -5,7 +5,7 @@
  *
  */
 
-module.exports = {
+var creepTypeInformation = {
 
     // SCV - Standard Construction Vehicle
     //
@@ -62,3 +62,60 @@ module.exports = {
     },
 
 };
+
+creepTypeInformation.getCreepTypeInformation = function (creepRole, maxCost)
+{
+};
+
+function getCreepType (creepRole)
+}
+	var creepTypes = require('tmp.CreepTypes2');
+
+	for (let n in creepTypes)
+	{
+		if (creepTypes[n].roles.includes(creepRole))
+		{
+			return creepTypes[n]
+		}
+	}
+
+}
+
+fuction getBestBody (creepType, maxCost)
+{
+	var finalBody = []
+	for (let n in creepType.bodies)
+	{
+		if (calculateCreepCost(creepType.bodies[n] <= maxCost) { finalBody = creepType.bodies[n]};
+	}
+	return finalBody;
+}
+
+function calculateCreepCost(bodyType)
+{
+	/* - From Documentation:
+	 *
+ 	 *    BODY PARTS:								BODYPART_COST: {
+	 *    			  					      			  "move": 50,
+	 *    MOVE: "move",								      "work": 100,
+	 *    WORK: "work",								      "attack": 80,
+	 *    CARRY: "carry",				,			      "carry": 50,
+	 *    ATTACK: "attack",							      "heal": 250,
+	 *    RANGED_ATTACK: "ranged_attack"			      "ranged_attack": 150,
+	 *    TOUGH: "tough",							      "tough": 10,
+	 *		HEAL: "heal",															      "claim": 600
+	 *    CLAIM: "claim",															      },
+	 *
+	 */
+
+	var cost = 0;
+
+	for (let n in bodyType)
+	{
+		cost += BODYPART_COST[bodyType[n]]
+	}
+
+	return cost;
+};
+
+module.exports = creepTypeInformation;
