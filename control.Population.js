@@ -48,8 +48,8 @@ Population.prototype.getCreepDistribution = function ()
 
 Population.prototype.SpawnNewCreep = function (spawnType)
 {
-    var unitnames = require('lib.unitnames');
-    var creepClasses = require('lib.creeptypes');
+    var unitNames = require('lib.UnitNames');
+    var creepClasses = require('lib.CreepTypes');
 
     // Geth the spawn info from the creep class definitions
 
@@ -57,7 +57,7 @@ Population.prototype.SpawnNewCreep = function (spawnType)
     if (creepClasses[spawnType.creepType])
     {
         var bodyparts = creepClasses[spawnType.creepType].body;
-        var name = '[' + spawnType.creepType + '] ' + unitnames.Generate() ;
+        var name = '[' + spawnType.creepType + '] ' + unitNames.Generate() ;
         var initialmemory = creepClasses[spawnType.creepType].initialmemory;
         initialmemory.role = spawnType.creepRole;
 
@@ -84,7 +84,7 @@ Population.prototype.run = function ()
     // Perform all population related tasks here
 
     // Run the creeps
-    var roles = require('core.roles');
+    var roles = require('core.Roles');
     for(var name in this.creeps) { roles[this.creeps[name].memory.role].run(this.creeps[name]); }
 
     // Try to spawn the next creep in the line.

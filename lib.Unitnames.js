@@ -3,11 +3,11 @@
  * module.exports.thing = 'a thing';
  *
  * You can import it from another modules like this:
- * var mod = require('lib.unitnames');
+ * var mod = require('lib.UnitNames');
  * mod.thing == 'a thing'; // true
  */
 
-var unitnames =
+var UnitNames =
 {
     Generate: function()
     {
@@ -22,7 +22,7 @@ var unitnames =
     }
 }
 
-module.exports = unitnames;
+module.exports = UnitNames;
 
 /*
 SAve this for later, if we decide to redo this:
