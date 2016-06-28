@@ -197,7 +197,7 @@ Population.prototype.Report =  function ()
     {
         line += ' (' + n + '): ' + this.creepDistribution.roles[n];
     }
-    report.push('-     Roles: ' )
+    report.push('-     Roles: ' + line )
 
     var n = this.getNextSpawn();
     if (n !== undefined)

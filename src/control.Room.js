@@ -98,7 +98,7 @@ roomHandler.prototype.Report = function (room)
     //Header -- This should REALLY be in a separate entity. Has nothing to do with room
     report.push('---------- GAME Report ----------');
     report.push('- Game Time : ' + Game.time );
-    report.push('- CPU: Limit: ' + Game.cpu.limit + '- Max CPU/Tick : ' + Game.cpu.tickLimit + '- Saved CPU : ' + Game.cpu.bucket);
+    report.push('- CPU: Limit: ' + Game.cpu.limit + ' | Max CPU/Tick : ' + Game.cpu.tickLimit + ' | Saved CPU : ' + Game.cpu.bucket);
     report.push('---------------------------------');
 
     //Population Report
