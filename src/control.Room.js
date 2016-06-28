@@ -1,10 +1,11 @@
 /*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
+ * Room Controller object
  *
- * You can import it from another modules like this:
- * var mod = require('control.Room');
- * mod.thing == 'a thing'; // true
+ * Main entry point to all activities within a single Game.room
+ *
+ * Shouldn't actually *DO* anything gamewise,
+ * but delegate to other controller objects, who will delegate, and so on.
+ *
  */
 
 /** Load modules & References **/
@@ -94,12 +95,10 @@ roomHandler.prototype.Report = function (room)
     // Build a population Report
     var report = new Array;
 
-    //Header
-    report.push('---------- Room Report ----------');
+    //Header -- This should REALLY be in a separate entity. Has nothing to do with room
+    report.push('---------- GAME Report ----------');
     report.push('- Game Time : ' + Game.time );
-    report.push('- CPU Limit : ' + Game.cpu.limit );
-    report.push('- CPU Limit : ' + Game.cpu.tickLimit );
-    report.push('- CPU Limit : ' + Game.cpu.bucket );
+    report.push('- CPU: Limit: ' + Game.cpu.limit + '- Max CPU/Tick : ' + Game.cpu.tickLimit + '- Saved CPU : ' + Game.cpu.bucket);
     report.push('---------------------------------');
 
     //Population Report

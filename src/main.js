@@ -3,8 +3,10 @@
 
 	This is the core loop. Gets called each tick.
 
-// Spawn your first worker using the console:
-//  Game.spawns.Spawn1.createCreep( [WORK, CARRY, MOVE], 'Harvester1' , {role: 'harvester'} );
+	Main loop will be used to set up the handlers for each room we control
+	(Just the simulator for now)
+
+	Once everything is properly set up, we'll run them.
 
 */
 

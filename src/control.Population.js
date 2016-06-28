@@ -17,6 +17,24 @@ function Population (room)
     this.creepDistribution = this.getCreepDistribution();
 }
 
+
+Population.prototype.run = function ()
+{
+    // Perform all population related tasks here
+
+    // Run the creeps
+    var roles = require('core.Roles');
+    for(var name in this.creeps) { roles[this.creeps[name].memory.role].run(this.creeps[name]); }
+
+    // Try to spawn the next creep in the line.
+    var nextSpawn = this.getNextSpawn();
+    if (nextSpawn)
+    {
+        this.SpawnNewCreep(nextSpawn);
+    }
+}
+
+
 Population.prototype.getCreepDistribution = function ()
 {
     var creepDistribution = {};
@@ -75,23 +93,7 @@ Population.prototype.SpawnNewCreep = function (spawnType)
     }
     else
     {
-        console.log('role.spawner: SpawnNewCreep: [ERROR] - Unknown Creep Class: ' + spawnType.creepType)
-    }
-}
-
-Population.prototype.run = function ()
-{
-    // Perform all population related tasks here
-
-    // Run the creeps
-    var roles = require('core.Roles');
-    for(var name in this.creeps) { roles[this.creeps[name].memory.role].run(this.creeps[name]); }
-
-    // Try to spawn the next creep in the line.
-    var nextSpawn = this.getNextSpawn();
-    if (nextSpawn)
-    {
-        this.SpawnNewCreep(nextSpawn);
+        console.log('role.spawner: SpawnNewCreep: [WARNING] - Unknown Creep Class: ' + spawnType.creepType)
     }
 }
 
@@ -212,3 +214,19 @@ Population.prototype.Report =  function ()
 }
 
 module.exports = Population ;
+
+
+/*** Private functions below ***/
+function getCreepTypeInfo(spawn, creepRole, maxCost)
+{
+	var creepTypes = require('tmp.CreepTypes2');
+
+	for (let n in creepTypes)
+	{
+		var creepType = creepTypes[n];
+		if (creepType.roles.includes(creepRole))
+		{
+
+		}
+	}
+}
