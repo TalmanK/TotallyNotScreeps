@@ -65,6 +65,14 @@ var creepTypeInformation = {
 
 creepTypeInformation.getCreepTypeInformation = function (creepRole, maxCost)
 {
+	var creepType = getCreepType(creepRole);
+
+	creepType.body = getBestBody(creepType, maxCost);
+
+	delete creepType.bodies;
+	delete creepType.roles;
+
+	return creepType;
 };
 
 function getCreepType (creepRole)
