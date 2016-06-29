@@ -99,12 +99,11 @@ function PlanRoad  (start, end)
     var roadIsKnown = false;
     var knownRoads =  this.room.memory.roomInfo.knownRoads;
 
-    if ( this.room.memory.roomInfo.knownRoads.length > 0)
+    if ( knownRoads && knownRoads.length > 0)
     {
-        for ( let n in this.room.memory.roomInfo.knownRoads )
+        for ( let n in knownRoads )
         {
-            var knownRoad = this.room.memory.roomInfo.knownRoads[n];
-
+            var knownRoad = knownRoads[n];
             if ( knownRoad.start.x == start.pos.x &&  knownRoad.start.y == start.pos.y &&  knownRoad.end.x == end.pos.x &&  knownRoad.end.y == end.pos.y  )
             {
                 roadIsKnown = true;
@@ -143,13 +142,6 @@ function PlanRoad  (start, end)
 
     // Set a return value, so the caller knows if we did anything
     return (!roadIsKnown);
-};
-
-Construction.prototype.PlanRoadAround = function(roomObject)
-{
-    // Refactored into PlanRoad.
-    console.log('control.Construction - WARNING - function PlanRoadAround called. Stop using this.');
-    return PlanRoad(roomObject, roomObject);
 };
 
 Construction.prototype.BuildNextConstructionSite = function ()
