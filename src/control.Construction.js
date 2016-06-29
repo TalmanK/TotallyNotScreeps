@@ -39,8 +39,9 @@ Construction.prototype.run = function()
 Construction.prototype.PlanNextConstruction = function ()
 {
     // Build stuff based on room controller's upgrade level.
-    // Check for higher level stuff first, leave the lowlevel stuff for when we have time later on.
-    console.log('Construction.Run: Planning next construction project.');
+    // Check for higher level stuff first, leave the low level stuff for when we have time later on.
+
+    // console.log('control.Construction.PlanNextConstruction: Planning next construction project.');
 
 
     var spawn  = this.room.find(FIND_MY_SPAWNS)[0];
@@ -65,12 +66,12 @@ Construction.prototype.PlanNextConstruction = function ()
         if (currentExtensions + futureExtensions < maxExtensions)
         {
             var roads = this.room.find(FIND_STRUCTURES, {filter: { structureType: STRUCTURE_ROAD } });
-            console.log('DEBUG: control.Construction - roads:' + roads);
+            // console.log('DEBUG: control.Construction - roads:' + roads);
             if (roads)
             {
                 //Get a random piece of road, we'll try to build there
                 var whereToBuild = roads[Math.floor(Math.random(roads.length))];
-                console.log('DEBUG: control.Construction - whereToBuild:' + whereToBuild);
+                // console.log('DEBUG: control.Construction - whereToBuild:' + whereToBuild);
                 if (PlanBuilding(whereToBuild,STRUCTURE_EXTENSION))
                 {
                     console.log('control.Construction - Planning an EXTENSION at ' + whereToBuild.pos);
@@ -168,15 +169,15 @@ function PlanRoad  (start, end)
         // otherwise plan one from start to end
         if (start == end )
         {
-            console.log('Construction.PlanRoad: Around position: ' + start.pos );
+            console.log('control.Construction.PlanRoad: Around Position: ' + start.pos );
 
             road = getSurroundingPositions(start) ;
 
         }
         else
         {
-            console.log('Construction.PlanRoad: start: ' + start + ' - position: ' + start.pos );
-            console.log('Construction.PlanRoad: end: ' + end + ' - position: ' + end.pos );
+            console.log('control.Construction.PlanRoad: start: ' + start + ' - position: ' + start.pos );
+            console.log('control.Construction.PlanRoad: end: ' + end + ' - position: ' + end.pos );
 
             road = PathFinder.search(start.pos, { pos: end.pos, range: 1 }) ;
         }
@@ -202,8 +203,8 @@ function PlanBuilding (roomObject, StructureType)
     var attempts = 0;
     var buildPosition = {};
 
-    console.log('DEBUG: control.Construction.PlanBuilding - roomObject:' + roomObject);
-    console.log('DEBUG: control.Construction.PlanBuilding - StructureType:' + StructureType);
+    // console.log('DEBUG: control.Construction.PlanBuilding - roomObject:' + roomObject);
+    // console.log('DEBUG: control.Construction.PlanBuilding - StructureType:' + StructureType);
 
     while (!found && attempts < 10)
     {
@@ -211,10 +212,10 @@ function PlanBuilding (roomObject, StructureType)
 
         // Pick a random position from the candidates
         buildPosition = candidates.path[Math.floor(Math.random(candidates.path.length))];
-        console.log('DEBUG: control.Construction.PlanBuilding - buildPosition:' + buildPosition + ' (attempt: ' + attempts + ')');
-        console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS TERRAIN?' + JSON.stringify(buildPosition.lookFor(LOOK_TERRAIN)));
-        console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS SITES?' + JSON.stringify(buildPosition.lookFor(LOOK_CONSTRUCTION_SITES)));
-        console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS STRUCTURE.' + JSON.stringify(buildPosition.lookFor(LOOK_STRUCTURES)));
+        // console.log('DEBUG: control.Construction.PlanBuilding - buildPosition:' + buildPosition + ' (attempt: ' + attempts + ')');
+        // console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS TERRAIN?' + JSON.stringify(buildPosition.lookFor(LOOK_TERRAIN)));
+        // console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS SITES?' + JSON.stringify(buildPosition.lookFor(LOOK_CONSTRUCTION_SITES)));
+        // console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS STRUCTURES?' + JSON.stringify(buildPosition.lookFor(LOOK_STRUCTURES)));
         // Check if it is buildable (I really hope this works )
         if (    buildPosition.lookFor(LOOK_TERRAIN) == 'plain'
             &&  buildPosition.lookFor(LOOK_CONSTRUCTION_SITES).length == 0
