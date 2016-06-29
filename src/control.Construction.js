@@ -70,6 +70,7 @@ Construction.prototype.PlanNextConstruction = function ()
             {
                 //Get a random piece of road, we'll try to build there
                 var whereToBuild = roads[Math.floor(Math.random(roads.length))];
+                console.log('DEBUG: control.Construction - whereToBuild:' + whereToBuild);
                 if (PlanBuilding(whereToBuild,STRUCTURE_EXTENSION))
                 {
                     console.log('control.Construction - Planning an EXTENSION at ' + whereToBuild.pos);
@@ -201,12 +202,19 @@ function PlanBuilding (roomObject, StructureType)
     var attempts = 0;
     var buildPosition = {};
 
+    console.log('DEBUG: control.Construction.PlanBuilding - roomObject:' + roomObject);
+    console.log('DEBUG: control.Construction.PlanBuilding - StructureType:' + StructureType);
+
     while (!found && attempts < 10)
     {
         attempts++; // Just in case we end up looping infinitely.
 
         // Pick a random position from the candidates
         buildPosition = candidates.path[Math.floor(Math.random(candidates.path.length))];
+        console.log('DEBUG: control.Construction.PlanBuilding - buildPosition:' + buildPosition + ' (attempt: ' + attempts + ')');
+        console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS TERRAIN?' + JSON.stringify(buildPosition.lookFor(LOOK_TERRAIN)));
+        console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS SITES?' + JSON.stringify(buildPosition.lookFor(LOOK_CONSTRUCTION_SITES)));
+        console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS STRUCTURE.' + JSON.stringify(buildPosition.lookFor(LOOK_STRUCTURES)));
         // Check if it is buildable (I really hope this works )
         if (    buildPosition.lookFor(LOOK_TERRAIN)
             && !buildPosition.lookFor(LOOK_CONSTRUCTION_SITES)
