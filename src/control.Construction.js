@@ -57,7 +57,25 @@ Construction.prototype.PlanNextConstruction = function ()
     //      - Up to 5 containers (useful ?)
     if (controllerLevel >= 2 )
     {
-		// if (!this.PlanBuilding(STRUCTURE_EXTENSION))
+        //Check this.room.memory.roomInfo.futureConstructionSites if there aren't already sites
+        var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION } })
+        var futureExtensions = _(this.room.memory.roomInfo.futureConstructionSites).where({structure: STRUCTURE_EXTENSION});
+        var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][this.room.controller.level];
+
+        if (currentExtensions + futureExtensions < maxExtensions)
+        {
+            var roads = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_ROAD } });
+            if (roads)
+            {
+                //Get a random piece of road, we'll try to build there
+                var whereToBuild = roads[Math.floor(Math.random(roads.length))];
+                if (PlanBuilding(whereToBuild,STRUCTURE_EXTENSION))
+                {
+                    console.log('control.Construction - Planning an EXTENSION at ' + whereToBuild.pos);
+                }
+            }
+
+        }
     }
 
 
@@ -69,19 +87,19 @@ Construction.prototype.PlanNextConstruction = function ()
     {
 
         // PlanRoad returns false if the road has already been built
-        // the if(!) construct should therefor only execute the next line if the previous has anready been done
+        // the if(!) construct should therefor only execute the next line if the previous has already been done
 
 
         if (!PlanRoad(spawn, sources[0])) 			// Test1: road from spawn to resource node
 		if (!PlanRoad(sources[0], controller))		// Test2: road from resource to controller
 		if (!PlanRoad(spawn, spawn))				// Test3: road around the spawn
-		if (!PlanRoad(controller, controller))			// Test4: road around the controller
+		if (!PlanRoad(controller, controller))	    // Test4: road around the controller
         if (!PlanRoad(spawn, sources[1])) 			// Test5: road from spawn to resource node
         if (!PlanRoad(spawn, sources[2])) 			// Test5: road from spawn to resource node
 		{ } // Empty code block or it will not compile
 		    // That, or put a ; after the last entry
 
-        // Order sources by range
+        // Order sources by range somehow?
         // var targets = {};
 		// for (var n in sources)
         // {
@@ -92,6 +110,36 @@ Construction.prototype.PlanNextConstruction = function ()
     }
 
 };
+Construction.prototype.BuildNextConstructionSite = function ()
+{
+    if (this.room.memory.roomInfo.futureConstructionSites.length > 0)
+    {
+        var nextConstructionSite = this.room.memory.roomInfo.futureConstructionSites.shift();
+        var pos = new RoomPosition(nextConstructionSite.position.x, nextConstructionSite.position.y, nextConstructionSite.position.roomName);
+        console.log('control.Construction: Starting work on structure [' + nextConstructionSite.structure + '] at position ' + pos)
+        this.room.createConstructionSite(pos, nextConstructionSite.structure);
+    }
+};
+
+Construction.prototype.Report = function()
+{
+    // Build a population Report
+    var report = new Array;
+
+    //Header
+    report.push('---------- Construction Report ----------');
+    report.push('-');
+
+    report.push('- Number of planned construction sites: ' + this.room.memory.roomInfo.futureConstructionSites.length);
+    report.push('- Number of known roads: ' + this.room.memory.roomInfo.knownRoads.length);
+
+
+    return report;
+};
+
+module.exports = Construction ;
+
+// Private stuff goes here
 
 function PlanRoad  (start, end)
 {
@@ -142,38 +190,38 @@ function PlanRoad  (start, end)
 
     // Set a return value, so the caller knows if we did anything
     return (!roadIsKnown);
-};
+}
 
-Construction.prototype.BuildNextConstructionSite = function ()
+function PlanBuilding (roomObject, StructureType)
 {
-    if (this.room.memory.roomInfo.futureConstructionSites.length > 0)
+    // Try to build a structure near to the roomObject
+
+    var candidates = getSurroundingPositions(roomObject);
+    var found = false;
+    var attempts = 0;
+    var buildPosition = {};
+
+    while (!found && attempts < 10)
     {
-        var nextConstructionSite = this.room.memory.roomInfo.futureConstructionSites.shift();
-        var pos = new RoomPosition(nextConstructionSite.position.x, nextConstructionSite.position.y, nextConstructionSite.position.roomName);
-        console.log('control.Construction: Starting work on structure [' + nextConstructionSite.structure + '] at position ' + pos)
-        this.room.createConstructionSite(pos, nextConstructionSite.structure);
+        attempts++; // Just in case we end up looping infinitely.
+
+        // Pick a random position from the candidates
+        buildPosition = candidates.path[Math.floor(Math.random(candidates.path.length))];
+        // Check if it is buildable (I really hope this works )
+        if (    buildPosition.lookFor(LOOK_TERRAIN)
+            && !buildPosition.lookFor(LOOK_CONSTRUCTION_SITES)
+            && !buildPosition.lookFor(LOOK_STRUCTURES))
+        {
+            found = true;
+            // Add the structure & location to the top of the construction list.
+            roomObject.room.memory.roomInfo.futureConstructionSites.unshift({position: buildPosition, structure: StructureType})
+        }
     }
-};
 
-Construction.prototype.Report = function()
-{
-    // Build a population Report
-    var report = new Array;
+    // Return success status to caller
+    return found;
+}
 
-    //Header
-    report.push('---------- Construction Report ----------');
-    report.push('-');
-
-    report.push('- Number of planned construction sites: ' + this.room.memory.roomInfo.futureConstructionSites.length);
-    report.push('- Number of known roads: ' + this.room.memory.roomInfo.knownRoads.length);
-
-
-    return report;
-};
-
-module.exports = Construction ;
-
-// Private stuff goes here
 
 function getSurroundingPositions (roomObject)
 {
