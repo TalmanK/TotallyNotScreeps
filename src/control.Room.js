@@ -69,8 +69,11 @@ roomHandler.prototype.getRoomInfo = function (room)
         // ----------------------------------------
         console.log('control.Room: Room [' + room.name + ']: Looking for resource location.')
         var sources =  this.room.find(FIND_SOURCES);
-        roomInfo.sources = new Array;
+        //Sort the sources by distance from the First spawn
+            var pos = spawns[0].pos;
+            sources.sort(function(a,b){return pos.getRangeTo(a) - pos.getRangeTo(b) });
 
+        roomInfo.sources = new Array;
         for (var n in sources)
         {
             var source = sources[n];
