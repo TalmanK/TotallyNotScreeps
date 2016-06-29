@@ -22,16 +22,15 @@ function Construction(room)
 
 Construction.prototype.run = function()
 {
+    // Plan next constructions. (This fills up the futureconstructionsites array)
+    this.PlanNextConstruction();
+
     // Do construction stuff - but only if we have builders and are not already building
     if ( this.builders.length > 0  && this.activeConstructionSites.length == 0 )
     {
         if (this.room.memory.roomInfo.futureConstructionSites.length > 0 )
         {
             this.BuildNextConstructionSite();
-        }
-        else
-        {
-            this.PlanNextConstruction();
         }
     }
 };
