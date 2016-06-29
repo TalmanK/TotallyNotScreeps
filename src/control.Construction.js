@@ -58,7 +58,7 @@ Construction.prototype.PlanNextConstruction = function ()
     if (controllerLevel >= 2 )
     {
         //Check this.room.memory.roomInfo.futureConstructionSites if there aren't already sites
-        var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION } })
+        var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION } });
         var futureExtensions = _(this.room.memory.roomInfo.futureConstructionSites).where({structure: STRUCTURE_EXTENSION});
         var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][this.room.controller.level];
 
@@ -89,15 +89,14 @@ Construction.prototype.PlanNextConstruction = function ()
 
         // PlanRoad returns false if the road has already been built
         // the if(!) construct should therefor only execute the next line if the previous has already been done
-
-
-        if (!PlanRoad(spawn, sources[0])) 			// Test1: road from spawn to resource node
-		if (!PlanRoad(sources[0], controller))		// Test2: road from resource to controller
-		if (!PlanRoad(spawn, spawn))				// Test3: road around the spawn
-		if (!PlanRoad(controller, controller))	    // Test4: road around the controller
-        if (!PlanRoad(spawn, sources[1])) 			// Test5: road from spawn to resource node
-        if (!PlanRoad(spawn, sources[2])) 			// Test5: road from spawn to resource node
-		{ } // Empty code block or it will not compile
+        if (!PlanRoad(spawn, sources[0]))
+		if (!PlanRoad(sources[0], controller))
+        if (!PlanRoad(spawn, controller))
+		if (!PlanRoad(spawn, spawn))
+		if (!PlanRoad(controller, controller))
+        if (!PlanRoad(spawn, sources[1]))
+        if (!PlanRoad(spawn, sources[2]))
+            { } // Empty code block or it will not compile
 		    // That, or put a ; after the last entry
 
         // Order sources by range somehow?

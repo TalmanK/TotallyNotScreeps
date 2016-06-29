@@ -30,7 +30,7 @@ module.exports.loop = function () {
     }
 
     // Every 100 ticks or so, dump a report to the console
-    if ( Game.time % 100 == 0 )
+    if ( Game.time % 200 == 0 )
     {
         var report = roomController.Report();
         for ( var n in report ) { console.log(report[n]); }
