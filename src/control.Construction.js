@@ -65,7 +65,7 @@ Construction.prototype.PlanNextConstruction = function ()
         if (currentExtensions + futureExtensions < maxExtensions)
         {
             var roads = this.room.find(FIND_STRUCTURES, {filter: { structureType: STRUCTURE_ROAD } });
-            console.log('DEBUG: control.Construction - ');
+            console.log('DEBUG: control.Construction - roads:' + roads);
             if (roads)
             {
                 //Get a random piece of road, we'll try to build there
