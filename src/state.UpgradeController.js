@@ -16,8 +16,19 @@ run: function (creep, newState, altState)
     }
     if(creep.carry.energy == 0)
     {
-        creep.memory.state = newState
+        creep.memory.state = newState;
         creep.say(creep.memory.state);
+    }
+    //Special Case: Builders will occasionally help upgrade the controller.
+    // When new construction sites are available, switch to the alternate state (building)
+    if(creep.memory.role = 'builder')
+    {
+        if (creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES))
+        {
+            creep.memory.state = altState;
+            creep.say(creep.memory.state);
+
+        }
     }
 
 }

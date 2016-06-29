@@ -41,7 +41,7 @@ var roleBuilder =
             //Should only be called if we *REALLY* don't have anything to do
             // Also... we should stop doing this as soon as other work is available (To-Do)
             case 'UpgradeController':
-                states.UpgradeController.run(creep, 'PickUpResources', 'RepairUrgent');
+                states.UpgradeController.run(creep, 'PickUpResources', 'BuildClosestSite');
                 break;
 
             default:
