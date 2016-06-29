@@ -216,9 +216,9 @@ function PlanBuilding (roomObject, StructureType)
         console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS SITES?' + JSON.stringify(buildPosition.lookFor(LOOK_CONSTRUCTION_SITES)));
         console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS STRUCTURE.' + JSON.stringify(buildPosition.lookFor(LOOK_STRUCTURES)));
         // Check if it is buildable (I really hope this works )
-        if (    buildPosition.lookFor(LOOK_TERRAIN)
-            && !buildPosition.lookFor(LOOK_CONSTRUCTION_SITES)
-            && !buildPosition.lookFor(LOOK_STRUCTURES))
+        if (    buildPosition.lookFor(LOOK_TERRAIN) == 'plain'
+            &&  buildPosition.lookFor(LOOK_CONSTRUCTION_SITES).length == 0
+            &&  buildPosition.lookFor(LOOK_STRUCTURES).length == 0)
         {
             found = true;
             // Add the structure & location to the top of the construction list.
