@@ -99,7 +99,7 @@ roomHandler.prototype.Report = function (room)
     report.push('---------- GAME Report ----------');
     report.push('- Game Time : ' + Game.time );
     report.push('- CPU: Limit: ' + Game.cpu.limit + ' | Max CPU/Tick : ' + Game.cpu.tickLimit + ' | Saved CPU : ' + Game.cpu.bucket);
-    report.push('---------------------------------');
+    // report.push('---------------------------------');
 
     //Population Report
     report = report.concat(this.populationController.Report());
