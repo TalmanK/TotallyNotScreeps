@@ -21,7 +21,7 @@ run: function (creep, newState, altState)
     }
     //Special Case: Builders will occasionally help upgrade the controller.
     // When new construction sites are available, switch to the alternate state (building)
-    if(creep.memory.role = 'builder')
+    if(creep.memory.role == 'builder')
     {
         if (creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES))
         {
