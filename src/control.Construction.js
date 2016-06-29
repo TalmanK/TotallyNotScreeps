@@ -34,7 +34,7 @@ Construction.prototype.run = function()
             this.PlanNextConstruction();
         }
     }
-}
+};
 
 Construction.prototype.PlanNextConstruction = function ()
 {
@@ -74,8 +74,8 @@ Construction.prototype.PlanNextConstruction = function ()
 
         if (!this.PlanRoad(spawn, sources[0])) 			// Test1: road from spawn to resource node
 		if (!this.PlanRoad(sources[0], controller))		// Test2: road from resource to controller
-		if (!this.PlanRoadAround(spawn))				// Test3: road around the spawn
-		if (!this.PlanRoadAround(controller))			// Test4: road around the controller
+		if (!this.PlanRoad(spawn, spawn))				// Test3: road around the spawn
+		if (!this.PlanRoad(controller, controller))			// Test4: road around the controller
         if (!this.PlanRoad(spawn, sources[1])) 			// Test5: road from spawn to resource node
         if (!this.PlanRoad(spawn, sources[2])) 			// Test5: road from spawn to resource node
 		{ } // Empty code block or it will not compile
@@ -91,7 +91,7 @@ Construction.prototype.PlanNextConstruction = function ()
 
     }
 
-}
+};
 
 Construction.prototype.PlanRoad = function(start, end)
 {
@@ -101,7 +101,7 @@ Construction.prototype.PlanRoad = function(start, end)
 
     if ( this.room.memory.roomInfo.knownRoads.length > 0)
     {
-        for ( var n in this.room.memory.roomInfo.knownRoads )
+        for ( let n in this.room.memory.roomInfo.knownRoads )
         {
             var knownRoad = this.room.memory.roomInfo.knownRoads[n];
 
@@ -114,12 +114,25 @@ Construction.prototype.PlanRoad = function(start, end)
     // If not a known road, plan it.
     if ( !roadIsKnown )
     {
-        console.log('Construction.PlanRoad: start: ' + start + ' - position: ' + start.pos );
-        console.log('Construction.PlanRoad: end: ' + end + ' - position: ' + end.pos );
+        var road = {};
 
-        var road = PathFinder.search(start.pos, { pos: end.pos, range: 1 }) ;
+        // Special case, if start and end are the same, build a road around the object
+        // otherwise plan one from start to end
+        if (start == end )
+        {
+            console.log('Construction.PlanRoad: Around position: ' + start.pos );
 
-        for ( var n in road.path )
+            road = getSurroundingPositions(start) ;
+
+        }
+        else
+        {
+            console.log('Construction.PlanRoad: start: ' + start + ' - position: ' + start.pos );
+            console.log('Construction.PlanRoad: end: ' + end + ' - position: ' + end.pos );
+
+            road = PathFinder.search(start.pos, { pos: end.pos, range: 1 }) ;
+        }
+        for ( let n in road.path )
         {
             var buildPosition = road.path[n];
             this.room.memory.roomInfo.futureConstructionSites.push({position: buildPosition, structure: STRUCTURE_ROAD})
@@ -130,40 +143,14 @@ Construction.prototype.PlanRoad = function(start, end)
 
     // Set a return value, so the caller knows if we did anything
     return (!roadIsKnown);
-}
+};
 
 Construction.prototype.PlanRoadAround = function(roomObject)
 {
-    //Check if road is already known
-    var roadIsKnown = false;
-    if ( this.room.memory.roomInfo.knownRoads.length > 0)
-    {
-        for ( var n in this.room.memory.roomInfo.knownRoads )
-        {
-            var knownRoad = this.room.memory.roomInfo.knownRoads[n];
-
-            if ( knownRoad.start.x == roomObject.pos.x &&  knownRoad.start.y == roomObject.pos.y &&  knownRoad.end.x == roomObject.pos.x &&  knownRoad.end.y == roomObject.pos.y  )
-            {
-                roadIsKnown = true;
-            }
-        }
-    }
-    // If not a known road, plan it.
-    if ( !roadIsKnown )
-    {
-        console.log('Construction.PlanRoad: Around position: ' + roomObject.pos );
-
-        var road = getSurroundingPositions(roomObject) ;
-
-        for ( var n in road.path )
-        {
-            var buildPosition = road.path[n];
-            this.room.memory.roomInfo.futureConstructionSites.push({position: buildPosition, structure: STRUCTURE_ROAD})
-        }
-
-        this.room.memory.roomInfo.knownRoads.push({start: roomObject.pos, end: roomObject.pos });
-    }
-}
+    // Refactored into PlanRoad.
+    console.log('control.Construction - WARNING - function PlanRoadAround called. Stop using this.');
+    return PlanRoad(roomObject, roomObject);
+};
 
 Construction.prototype.BuildNextConstructionSite = function ()
 {
@@ -174,7 +161,7 @@ Construction.prototype.BuildNextConstructionSite = function ()
         console.log('control.Construction: Starting work on structure [' + nextConstructionSite.structure + '] at position ' + pos)
         this.room.createConstructionSite(pos, nextConstructionSite.structure);
     }
-}
+};
 
 Construction.prototype.Report = function()
 {
@@ -190,7 +177,7 @@ Construction.prototype.Report = function()
 
 
     return report;
-}
+};
 
 module.exports = Construction ;
 
