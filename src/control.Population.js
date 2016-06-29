@@ -170,7 +170,7 @@ Population.prototype.getNextSpawn =  function ()
     spawnPriority = 9  // (lower is better)
     // ----------------------------
     //Try out a few archers
-    nextSpawns.push ( {spawnPriority: spawnPriority, creepType: 'AXE', creepRole: 'archer'} );
+    // nextSpawns.push ( {spawnPriority: spawnPriority, creepType: 'AXE', creepRole: 'archer'} );
 
 
     // Sort by priority, then return
