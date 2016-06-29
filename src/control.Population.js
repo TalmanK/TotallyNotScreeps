@@ -142,12 +142,6 @@ Population.prototype.getNextSpawn =  function ()
         // console.log('contol.Population: Priority ' + spawnPriority + ': Room [' + this.room.name + '] has less builders than miners.');
         nextSpawns.push ( {spawnPriority: spawnPriority, creepType: 'SCV', creepRole: 'builder'} );
     }
-    // get a 2nd miner out
-    if ( this.creepDistribution.roles.miner < 2 )
-    {
-        // console.log('contol.Population: Priority ' + spawnPriority + ': Room [' + this.room.name + '] has less than 2 miners.');
-        nextSpawns.push ( {spawnPriority: spawnPriority, creepType: 'SEV', creepRole: 'miner'} );
-    }
 
     // ----------------------------
     spawnPriority = 4  // (lower is better)
@@ -159,7 +153,7 @@ Population.prototype.getNextSpawn =  function ()
         // console.log('contol.Population: Priority ' + spawnPriority + ': Room [' + this.room.name + '] has no dedicated upgrader creeps.');
         nextSpawns.push ( {spawnPriority: spawnPriority, creepType: 'SCV', creepRole: 'upgrader'} );
     }
-    // Try to get 2 miners on each resource
+    // Try to get a miner on each resource
     if ( this.creepDistribution.roles.miner < (this.sources.length) )
     {
         // console.log('contol.Population: Priority ' + spawnPriority + ': Room [' + this.room.name + '] has less miners than resource nodes.');
