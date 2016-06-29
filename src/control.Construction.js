@@ -97,7 +97,7 @@ function PlanRoad  (start, end)
 {
     //Check if road is already known
     var roadIsKnown = false;
-    var knownRoads =  this.room.memory.roomInfo.knownRoads;
+    var knownRoads =  start.room.memory.roomInfo.knownRoads;
 
     if ( knownRoads && knownRoads.length > 0)
     {
@@ -134,10 +134,10 @@ function PlanRoad  (start, end)
         for ( let n in road.path )
         {
             var buildPosition = road.path[n];
-            this.room.memory.roomInfo.futureConstructionSites.push({position: buildPosition, structure: STRUCTURE_ROAD})
+            start.room.memory.roomInfo.futureConstructionSites.push({position: buildPosition, structure: STRUCTURE_ROAD})
         }
 
-        this.room.memory.roomInfo.knownRoads.push({start: start.pos, end: end.pos });
+        start.room.memory.roomInfo.knownRoads.push({start: start.pos, end: end.pos });
     }
 
     // Set a return value, so the caller knows if we did anything
