@@ -72,12 +72,12 @@ Construction.prototype.PlanNextConstruction = function ()
         // the if(!) construct should therefor only execute the next line if the previous has anready been done
 
 
-        if (!this.PlanRoad(spawn, sources[0])) 			// Test1: road from spawn to resource node
-		if (!this.PlanRoad(sources[0], controller))		// Test2: road from resource to controller
-		if (!this.PlanRoad(spawn, spawn))				// Test3: road around the spawn
-		if (!this.PlanRoad(controller, controller))			// Test4: road around the controller
-        if (!this.PlanRoad(spawn, sources[1])) 			// Test5: road from spawn to resource node
-        if (!this.PlanRoad(spawn, sources[2])) 			// Test5: road from spawn to resource node
+        if (!PlanRoad(spawn, sources[0])) 			// Test1: road from spawn to resource node
+		if (!PlanRoad(sources[0], controller))		// Test2: road from resource to controller
+		if (!PlanRoad(spawn, spawn))				// Test3: road around the spawn
+		if (!PlanRoad(controller, controller))			// Test4: road around the controller
+        if (!PlanRoad(spawn, sources[1])) 			// Test5: road from spawn to resource node
+        if (!PlanRoad(spawn, sources[2])) 			// Test5: road from spawn to resource node
 		{ } // Empty code block or it will not compile
 		    // That, or put a ; after the last entry
 
@@ -93,7 +93,7 @@ Construction.prototype.PlanNextConstruction = function ()
 
 };
 
-Construction.prototype.PlanRoad = function(start, end)
+function PlanRoad  (start, end)
 {
     //Check if road is already known
     var roadIsKnown = false;
