@@ -77,7 +77,7 @@ roomHandler.prototype.getRoomInfo = function (room)
         for (var n in sources)
         {
             var source = sources[n];
-            console.log('control.Room: Room [' + room.name + ']: Found Resource [' + source.id + '] at position [' + spawn.pos + '].')
+            console.log('control.Room: Room [' + room.name + ']: Found Resource [' + source.id + '] at position [' + source.pos + ']. (Range: ' + spawn.pos.getRangeTo(source) + ')')
             roomInfo.sources.push({resourceType: source.resourceType, id: source.id, pos: source.pos });
 
         }
