@@ -13,9 +13,17 @@ run: function (creep, newState, altState)
     var target = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
     if(target)
     {
-        if(creep.pickup(target) == ERR_NOT_IN_RANGE)
+        var result = creep.pickup(target);
+        if( result == ERR_NOT_IN_RANGE)
         {
         creep.moveTo(target);
+        }
+        else if( result == OK)
+        {
+            // We picked up something, usualy this means we're full or there's nothing left here.
+            // Don't be an asshole and hog the spot, go do what you need to do.
+            creep.memory.state = newState
+            creep.say(creep.memory.state);
         }
     }
     else
