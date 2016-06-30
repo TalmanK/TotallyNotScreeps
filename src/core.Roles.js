@@ -1,10 +1,12 @@
 /*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
+ * Dump all the roles into a single object
  *
- * You can import it from another modules like this:
- * var mod = require('core.Roles');
- * mod.thing == 'a thing'; // true
+ * All the roles should have a method "run()" 
+ * with the creep object as parameter.
+ * 
+ * This should allow us later to run a creep's role by just running:
+ *      ... roles[creep.memory.role].run(creep);
+ *
  */
 
 module.exports = {

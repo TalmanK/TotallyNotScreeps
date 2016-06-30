@@ -1,10 +1,9 @@
 /*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('core.Cleanup');
- * mod.thing == 'a thing'; // true
+ * All Cleanup functions for the game in one place.
+ * 
+ * Tutorial shows us we need to manage stale memory objects
+ * Just in case there's more as we learn, group cleanup code in this module.
+ * 
  */
 
 module.exports =

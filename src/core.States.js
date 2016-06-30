@@ -1,10 +1,17 @@
 /*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
+ * Dump all the states into a single object
  *
- * You can import it from another modules like this:
- * var mod = require('core.States');
- * mod.thing == 'a thing'; // true
+ * All the states should have a method "run()" 
+ * with the following parameters.
+ * 
+ *  creep - the subject of the activity
+ *  newState - The state to set if the activity was completed successfully
+ *  altState (optional) - Alternate state, in case the current activity can't be executed
+ *              (the state should determine if/why)
+ * 
+ * This should allow us later to run a creep's state by just running:
+ *      ... states[creep.memory.state].run(creep);
+ *
  */
 
 module.exports = {

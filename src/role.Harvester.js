@@ -1,11 +1,16 @@
 /*
  * Harvester Role.
  *
- * 1) try and pick up free resources
- * 2) if no free resources, go harvest untill full
- * 3) when full, return resources to base
- *      if bases full, try and help with buildings
- *      if bases full and no building sites, dump in the controller
+ *  Only used early game. 
+ *  Dedicated Miner/Hauler teams are more effective.
+ * 
+ * Logic:
+ * 1) try and pick up free resources (default state?)
+ * 2) if no free resources, go harvest until full
+ * 3) when full, 
+ *      3.a) return resources to base
+ *      3.b) if bases full, try and help with building
+ *      3.c) if bases full and no building sites, dump in the controller
  *
  *
  */
