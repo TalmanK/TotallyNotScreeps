@@ -21,6 +21,7 @@ var roleMiner =
 
         switch (creep.memory.state)
         {
+            default:
             case 'FindResource':
                 creep.memory.target = this.findSource(creep);
                 creep.memory.state = 'MoveToTarget';
@@ -34,10 +35,7 @@ var roleMiner =
                 nextState = 'HarvestNearestNode';
                 altState = 'FindResource';
                 break;
-
-            default:
-                creep.memory.state = 'FindResource';
-       }
+        }
 
         // Run The state
         states[creep.memory.state].run(creep, nextState, altState)
