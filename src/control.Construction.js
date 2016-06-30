@@ -59,11 +59,14 @@ Construction.prototype.PlanNextConstruction = function ()
     if (controllerLevel >= 2 )
     {
 
-        var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION } });
+        var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION }}).length;
         var futureExtensions = _(this.roomInfo.futureConstructionSites).where({structure: STRUCTURE_EXTENSION});
         var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][controllerLevel];
+
+        if (futureExtensions)  {futureExtensions  = futureExtensions.length  } else {futureExtensions = 0};
+
         console.log('DEBUG: control.Construction - Extensions: (Current: ' + currentExtensions + ') (Planned: ' + futureExtensions + ') (Max: ' + maxExtensions + ')');
-        
+
         if (currentExtensions + futureExtensions < maxExtensions)
         {
             var roads = this.room.find(FIND_STRUCTURES, {filter: { structureType: STRUCTURE_ROAD } });
