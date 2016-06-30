@@ -1,48 +1,71 @@
 /*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
+ * Hauler Role.
  *
- * You can import it from another modules like this:
- * var mod = require('role.hauler');
- * mod.thing == 'a thing'; // true
+ *  To be used alongside a 'miner' creep.
+ *
+ * Logic:
+ * 1) Associate with a 'preferred' miner
+ * 2) if no free resources, go to 'our' miner and pickup resources there.
+ * 3) when full,
+ *      3.a) return resources to base
+ *      3.b) if bases full, find a builder and top up his energy supply.
+ *      3.c) if bases full and nowhere to dump our resouces, wait near the spawner.
  */
 
 var roleHauler =
 {
-    /** @param {Creep} creep **/
+    /**
+     * Determine the state to apply to the creep and execute it
+     * @param {Creep} creep
+     */
     run: function(creep)
     {
         var states = require('core.States');
 
+        var nextState = '';
+        var altState = '';
+
+        // Determine Current & Next States
+
         switch (creep.memory.state)
         {
-            case 'FindMiner':
-                creep.memory.target = this.findMiner(creep);
-                creep.memory.state = 'MoveToTarget';
 
             case 'MoveToTarget':
-                states.MoveToTarget.run(creep, 'PickUpResources', 'FindMiner');
+                nextState = 'PickUpResources';
+                altState = 'FindMiner';
                 break;
 
             case 'PickUpResources':
-                states.PickUpResources.run(creep,'DepositEnergy', 'PickUpResources');
-                break;
+                nextState = 'DepositEnergy';
+                altState = 'PickUpResources';
+                 break;
 
             case 'DepositEnergy':
-                states.DepositEnergy.run(creep,'MoveToTarget','RefuelBuilder');
+                nextState = 'MoveToTarget';
+                altState = 'RefuelBuilder';
                 break;
 
             case 'RefuelBuilder':
-                states.RefuelBuilder.run(creep,'MoveToTarget','MoveToClosestSpawner');
+                nextState = 'MoveToTarget';
+                altState = 'MoveToClosestSpawner';
                 break;
 
             case 'MoveToClosestSpawner':
-                states.MoveToClosestSpawner.run(creep,'DepositEnergy','RefuelBuilder');
+                nextState = 'DepositEnergy';
+                altState = 'RefuelBuilder';
                 break;
 
+
+            case 'FindMiner':
             default:
-                creep.memory.state = 'FindMiner';
+                // No state actions to run.
+                // Just find a new best friend, and move closer
+                creep.memory.target = this.findMiner(creep);
+                creep.memory.state = 'MoveToTarget';
+
        }
+        // Run The state
+        states[creep.memory.state].run(creep, nextState, altState)
 
     },
 
