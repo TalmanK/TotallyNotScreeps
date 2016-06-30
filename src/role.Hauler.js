@@ -64,6 +64,7 @@ var roleHauler =
                 creep.memory.state = 'MoveToTarget';
 
        }
+
         // Run The state
         states[creep.memory.state].run(creep, nextState, altState)
 

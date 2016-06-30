@@ -14,24 +14,34 @@ var roleMiner =
     {
         var states = require('core.States');
 
+        var nextState = '';
+        var altState = '';
+
+        // Determine Current & Next States
+
         switch (creep.memory.state)
         {
             case 'FindResource':
                 creep.memory.target = this.findSource(creep);
                 creep.memory.state = 'MoveToTarget';
-                break;
 
             case 'MoveToTarget':
-                states.MoveToTarget.run(creep,'HarvestNearestNode', 'FindResource' );
+                nextState = 'HarvestNearestNode';
+                altState = 'FindResource';
                 break;
 
             case 'HarvestNearestNode':
-                states.HarvestNearestNode.run(creep,'HarvestNearestNode', 'FindResource');
+                nextState = 'HarvestNearestNode';
+                altState = 'FindResource';
                 break;
 
             default:
                 creep.memory.state = 'FindResource';
        }
+
+        // Run The state
+        states[creep.memory.state].run(creep, nextState, altState)
+
     },
 
     findSource: function(creep)

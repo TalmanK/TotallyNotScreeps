@@ -1,10 +1,13 @@
 /*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
+ * Upgrader Role.
  *
- * You can import it from another modules like this:
- * var mod = require('role.upgrader');
- * mod.thing == 'a thing'; // true
+ *  Only used early game.
+ *  (Later we'll just use the haulers to dump massive amounts of energy into the controller)
+ *
+ * Logic:
+ * 1) Try and pick up free resources (Don't harvest!!)
+ * 2) If full, goto and upgrade controller
+ *
  */
 
 var roleUpgrader =
@@ -14,22 +17,31 @@ var roleUpgrader =
     {
         var states = require('core.States');
 
+        var nextState = '';
+        var altState = '';
+
+        // Determine Current & Next States
+
         switch (creep.memory.state)
         {
-
             case 'PickUpResources':
-                states.PickUpResources.run(creep,'UpgradeController', 'PickUpResources');
+                nextState = 'UpgradeController';
+                altState = 'PickUpResources';
                 break;
 
             case 'UpgradeController':
-                states.UpgradeController.run(creep, 'PickUpResources', 'PickUpResources');
+                nextState = 'PickUpResources';
+                altState = 'PickUpResources';
                 break;
 
             default:
                 creep.memory.state = 'PickUpResources'
-
-
         }
+
+        // Run The state
+        
+        states[creep.memory.state].run(creep, nextState, altState)
+
     }
 };
 module.exports = roleUpgrader;
