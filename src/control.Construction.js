@@ -58,7 +58,7 @@ Construction.prototype.PlanNextConstruction = function ()
     //      - Up to 5 containers (useful ?)
     if (controllerLevel >= 2 )
     {
-        //Check this.room.memory.roomInfo.futureConstructionSites if there aren't already sites
+
         var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION } });
         var futureExtensions = _(this.roomInfo.futureConstructionSites).where({structure: STRUCTURE_EXTENSION});
         var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][controllerLevel];
@@ -70,7 +70,7 @@ Construction.prototype.PlanNextConstruction = function ()
             if (roads)
             {
                 //Get a random piece of road, we'll try to build there
-                var whereToBuild = roads[Math.floor(Math.random(roads.length))];
+                var whereToBuild = roads[Math.floor(Math.random() * roads.length)];
                 // console.log('DEBUG: control.Construction - whereToBuild:' + whereToBuild);
                 if (PlanBuilding(whereToBuild,STRUCTURE_EXTENSION))
                 {
