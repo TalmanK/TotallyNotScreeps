@@ -12,7 +12,7 @@ var creepTypeInformation = {
     SCV:
     {
         roles: ['harvester', 'builder', 'upgrader'],
-        initialmemory: {state: 'idle', role: 'none',}
+        initialmemory: {state: 'idle', role: 'none'},
         bodies: {
         	1: [WORK, CARRY, MOVE],
         	2: [WORK, CARRY, MOVE, MOVE],
@@ -25,12 +25,11 @@ var creepTypeInformation = {
     ORE:
     {
         roles: ['miner'],
-        initialmemory: {state: 'idle', role: 'none',}
+        initialmemory: {state: 'idle', role: 'none'},
         bodies: {
         	1: [WORK, WORK, MOVE],
-        	2: [WORK, WORK, MOVE, WORK, MOVE],
-        	3: [WORK, WORK, MOVE, WORK, MOVE, WORK, MOVE],
-        	4: [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE],
+        	2: [WORK, WORK, MOVE, WORK, WORK, MOVE],
+        	3: [WORK, WORK, MOVE, WORK, WORK, MOVE, WORK, WORK, MOVE],
        	   	}
 
     },
@@ -39,7 +38,7 @@ var creepTypeInformation = {
     FTL:
     {
         roles: ['hauler'],
-        initialmemory: {state: 'idle', role: 'none',}
+        initialmemory: {state: 'idle', role: 'none'},
         bodies: {
         	1: [MOVE, CARRY, CARRY],
         	2: [MOVE, CARRY, MOVE, CARRY],
@@ -52,12 +51,12 @@ var creepTypeInformation = {
     AXE:
     {
         roles: ['archer'],
-        initialmemory: {state: 'idle', role: 'none',}
+        initialmemory: {state: 'idle', role: 'none'},
         bodies: {
         	1: [RANGED_ATTACK, MOVE, MOVE],
         	2: [RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE],
-        	3: [RANGED_ATTACK, RANGED_ATTACK, TOUGH, MOVE, MOVE, MOVE],
-        	4: [RANGED_ATTACK, RANGED_ATTACK, TOUGH, MOVE, MOVE, MOVE],
+        	3: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE],
+        	4: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE],
        	   	}
     },
 
@@ -75,8 +74,8 @@ creepTypeInformation.getCreepTypeInformation = function (creepRole, maxCost)
 	return creepType;
 };
 
-function getCreepType (creepRole)
-}
+function getCreepType(creepRole)
+{
 	var creepTypes = require('tmp.CreepTypes2');
 
 	for (let n in creepTypes)
@@ -89,17 +88,17 @@ function getCreepType (creepRole)
 
 }
 
-fuction getBestBody (creepType, maxCost)
+function getBestBody (creepType, maxCost)
 {
 	var finalBody = []
 	for (let n in creepType.bodies)
 	{
-		if (calculateCreepCost(creepType.bodies[n] <= maxCost) { finalBody = creepType.bodies[n]};
+		if (calculateCreepCost(creepType.bodies[n] <= maxCost)) { finalBody = creepType.bodies[n]};
 	}
 	return finalBody;
 }
 
-function calculateCreepCost(bodyType)
+function calculateCreepCost(bodyParts)
 {
 	/* - From Documentation:
 	 *
@@ -118,9 +117,9 @@ function calculateCreepCost(bodyType)
 
 	var cost = 0;
 
-	for (let n in bodyType)
+	for (let n in bodyParts)
 	{
-		cost += BODYPART_COST[bodyType[n]]
+		cost += BODYPART_COST[bodyParts[n]]
 	}
 
 	return cost;
