@@ -13,7 +13,7 @@
     var ConstructionController = require('control.Construction');
 
 
-function roomHandler (room)
+function RoomHandler (room)
 {
     this.room = room;
     this.roomInfo = this.getRoomInfo(room);
@@ -21,7 +21,7 @@ function roomHandler (room)
     this.populationController = new PopulationController(room);
 }
 
-roomHandler.prototype.run = function()
+RoomHandler.prototype.run = function()
 {
     // Run all the independent controllers for this room.
     // in the right order... pLanning first, then movement & actions.
@@ -30,9 +30,9 @@ roomHandler.prototype.run = function()
 
     this.populationController.run();
 
-}
+};
 
-roomHandler.prototype.getRoomInfo = function (room)
+RoomHandler.prototype.getRoomInfo = function (room)
 {
     if ( !room.memory.roomInfo )
     {
@@ -90,15 +90,16 @@ roomHandler.prototype.getRoomInfo = function (room)
     }
 
      return room.memory.roomInfo;
-}
+};
 
 
-roomHandler.prototype.Report = function (room)
+RoomHandler.prototype.Report = function (room)
 {
     // Build a population Report
     var report = new Array;
 
-    //Header -- This should REALLY be in a separate entity. Has nothing to do with room
+    //Header -- This should REALLY be in a separate entity. 
+    // //Has nothing to do with room
     report.push('---------- GAME Report ----------');
     report.push('- Game Time : ' + Game.time );
     report.push('- CPU: Limit: ' + Game.cpu.limit + ' | Max CPU/Tick : ' + Game.cpu.tickLimit + ' | Saved CPU : ' + Game.cpu.bucket);
@@ -112,5 +113,6 @@ roomHandler.prototype.Report = function (room)
 
     report.push('---------------------------------');
     return report;
-}
-module.exports = roomHandler;
+};
+
+module.exports = RoomHandler;
