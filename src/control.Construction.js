@@ -245,6 +245,14 @@ function PlanBuilding (roomObject, StructureType)
 }
 
 
+/**
+ * getSurroundingPositions
+ *      Returns all the positions around an ingame object.
+ *
+ * @param {RoomObject} roomObject The object around which to look.
+ * @returns {object} object.path contains an array of RoomPosition objects
+ * @example
+ */
 function getSurroundingPositions (roomObject)
 {
     var pos = roomObject.pos;
