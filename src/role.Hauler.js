@@ -55,8 +55,10 @@ var roleHauler =
                 altState = 'RefuelBuilder';
                 break;
 
-
             case 'FindMiner':
+                creep.memory.target = this.findMiner(creep);
+                creep.memory.state = 'MoveToTarget';
+                
             default:
                 // No state actions to run.
                 // Just find a new best friend, and move closer
