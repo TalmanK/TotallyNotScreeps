@@ -10,6 +10,7 @@
 function Construction(room)
 {
     this.room = room;
+    this.roomInfo = room.memory.roomInfo;
     this.activeConstructionSites = this.room.find(FIND_MY_CONSTRUCTION_SITES);
     this.builders = this.room.find(FIND_MY_CREEPS, { filter: object => object.memory.role == 'builder' });
 
@@ -43,8 +44,8 @@ Construction.prototype.PlanNextConstruction = function ()
     // console.log('control.Construction.PlanNextConstruction: Planning next construction project.');
 
 
-    var spawn  = this.room.find(FIND_MY_SPAWNS)[0];
-    var sources = this.room.find(FIND_SOURCES);
+    var spawn  = this.roomInfo.spawns[0];
+    var sources = this.roomInfo.sources;
     var controller = this.room.controller;
     var controllerLevel = this.room.controller.level;
 
@@ -59,8 +60,8 @@ Construction.prototype.PlanNextConstruction = function ()
     {
         //Check this.room.memory.roomInfo.futureConstructionSites if there aren't already sites
         var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION } });
-        var futureExtensions = _(this.room.memory.roomInfo.futureConstructionSites).where({structure: STRUCTURE_EXTENSION});
-        var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][this.room.controller.level];
+        var futureExtensions = _(this.roomInfo.futureConstructionSites).where({structure: STRUCTURE_EXTENSION});
+        var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][controllerLevel];
 
         if (currentExtensions + futureExtensions < maxExtensions)
         {
@@ -87,25 +88,30 @@ Construction.prototype.PlanNextConstruction = function ()
     if ( controllerLevel >= 1 )
     {
 
-        // PlanRoad returns false if the road has already been built
+        // PlanRoad returns false if the road has already been built (is in the "known roads" list)
         // the if(!) construct should therefor only execute the next line if the previous has already been done
-        if (!PlanRoad(spawn, sources[0]))
-		if (!PlanRoad(sources[0], controller))
-        if (!PlanRoad(spawn, controller))
-		if (!PlanRoad(spawn, spawn))
-		if (!PlanRoad(controller, controller))
-        if (!PlanRoad(spawn, sources[1]))
-        if (!PlanRoad(spawn, sources[2]))
-            { } // Empty code block or it will not compile
-		    // That, or put a ; after the last entry
+        // makes for quick and easy lines of:  if (!planroad(a,b)) if (!planroad(b,c))
 
-        // Order sources by range somehow?
-        // var targets = {};
-		// for (var n in sources)
-        // {
-        //    var range = spawn.pos.getRangeTo(sources[n]);
-        //    targets[range] = sources[n];
-        // }
+        // for every source, plan the following roads:
+        //      1) road to/from the spawn
+        //      2) road to/from the controller
+        //      3)road around the source location (do we need this?)
+        for (let n in sources)
+        {
+            source = Game.getObjectById(sources[n].id)
+            if (!PlanRoad(spawn, source))
+                if (!PlanRoad(source, spawn))
+                    if (!PlanRoad(source, controller))
+                    {} // Empty code block or it will not compile
+        }
+
+        // Plan a road between spawn and controller
+        if (!PlanRoad(spawn, controller))
+
+        // Pave the areas around the spawn and controller
+		if (!PlanRoad(spawn, spawn))
+		    if (!PlanRoad(controller, controller))
+            { } // Empty code block or it will not compile
 
     }
 
