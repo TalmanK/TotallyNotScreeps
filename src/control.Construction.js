@@ -62,7 +62,8 @@ Construction.prototype.PlanNextConstruction = function ()
         var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION } });
         var futureExtensions = _(this.roomInfo.futureConstructionSites).where({structure: STRUCTURE_EXTENSION});
         var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][controllerLevel];
-
+        console.log('DEBUG: control.Construction - Extensions: (Current: ' + currentExtensions + ') (Planned: ' + futureExtensions + ') (Max: ' + maxExtensions + ')');
+        
         if (currentExtensions + futureExtensions < maxExtensions)
         {
             var roads = this.room.find(FIND_STRUCTURES, {filter: { structureType: STRUCTURE_ROAD } });
@@ -215,7 +216,7 @@ function PlanBuilding (roomObject, StructureType)
         attempts++; // Just in case we end up looping infinitely.
 
         // Pick a random position from the candidates
-        buildPosition = candidates.path[Math.floor(Math.random(candidates.path.length))];
+        buildPosition = candidates.path[Math.floor(Math.random()*candidates.path.length)];
         // console.log('DEBUG: control.Construction.PlanBuilding - buildPosition:' + buildPosition + ' (attempt: ' + attempts + ')');
         // console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS TERRAIN?' + JSON.stringify(buildPosition.lookFor(LOOK_TERRAIN)));
         // console.log('DEBUG: control.Construction.PlanBuilding - buildPosition: HAS SITES?' + JSON.stringify(buildPosition.lookFor(LOOK_CONSTRUCTION_SITES)));
