@@ -42,27 +42,24 @@ var roleHauler =
 
             case 'DepositEnergy':
                 nextState = 'MoveToTarget';
-                altState = 'RefuelController';
+                altState = 'RefuelBuilder';
                 break;
 
-            case 'RefuelController':
+            case 'RefuelBuilder':
                 nextState = 'MoveToTarget';
                 altState = 'MoveToClosestSpawner';
                 break;
 
             case 'MoveToClosestSpawner':
                 nextState = 'DepositEnergy';
-                altState = 'RefuelController';
+                altState = 'RefuelBuilder';
                 break;
 
             case 'FindMiner':
-                creep.memory.target = this.findMiner(creep);
-                creep.memory.state = 'MoveToTarget';
-
             default:
                 // No state actions to run.
                 // Just find a new best friend, and move closer
-                creep.memory.target = this.findMiner(creep);
+                creep.memory.target = findRandomMiner(creep);
                 creep.memory.state = 'MoveToTarget';
 
        }
@@ -70,18 +67,68 @@ var roleHauler =
         // Run The state
         states[creep.memory.state].run(creep, nextState, altState)
 
-    },
-
-    findMiner: function(creep)
-    {
-        var targets = creep.room.find(FIND_MY_CREEPS, { filter: object => object.memory.role == 'miner' });
-
-        if(targets.length > 0)
-        {
-            return targets[Math.floor(Math.random() * targets.length)].id;
-        }
-
     }
 };
+
+function findRandomMiner(creep)
+{
+    var targets = creep.room.find(FIND_MY_CREEPS, { filter: object => object.memory.role == 'miner' });
+
+    if(targets.length > 0)
+    {
+        return targets[Math.floor(Math.random() * targets.length)].id;
+    }
+
+}
+
+function setStateVariables(creep) {
+
+    var currentState = creep.memory.state;
+    var nextState = '';
+    var altState = '';
+
+    // Determine Current & Next States
+
+    switch (currentState) {
+
+        case 'MoveToTarget':
+            nextState = 'PickUpResources';
+            altState = 'FindMiner';
+            break;
+
+        case 'PickUpResources':
+            nextState = 'DepositEnergy';
+            altState = 'PickUpResources';
+            break;
+
+        case 'DepositEnergy':
+            nextState = 'MoveToTarget';
+            altState = 'RefuelBuilder';
+            break;
+
+        case 'RefuelBuilder':
+            nextState = 'MoveToTarget';
+            altState = 'MoveToClosestSpawner';
+            break;
+
+        case 'MoveToClosestSpawner':
+            nextState = 'DepositEnergy';
+            altState = 'RefuelBuilder';
+            break;
+
+        case 'FindMiner':
+        default:
+            // No state actions to run.
+            // Just find a new best friend, and move closer
+            creep.memory.target = findRandomMiner(creep);
+            currentState = 'MoveToTarget';
+            nextState = 'PickUpResources';
+            altState = 'FindMiner';
+
+    }
+    
+
+}
+
 
 module.exports = roleHauler;
