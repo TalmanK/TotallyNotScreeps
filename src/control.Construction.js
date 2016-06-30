@@ -49,7 +49,7 @@ Construction.prototype.PlanNextConstruction = function ()
     var controller = this.room.controller;
     var controllerLevel = this.room.controller.level;
 
-    var spawn = Game.getObjectById(spawns[0].id)
+    var spawn = Game.getObjectById(spawns[0].id);
 
     // Level 2 or higher
     //      - Up to 5 Extensions (Near a road if possible)
@@ -59,11 +59,15 @@ Construction.prototype.PlanNextConstruction = function ()
     if (controllerLevel >= 2 )
     {
 
+        //Mental Note:  Find a clean way to delay construction on extensions untill we have a fair number of roads out.
+        //              we're a bit too efficient at the start right now, and extensions are getting built where we don't really want them.
+        //              Either that, or rethink how/where we plan on building them.
+
         var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION }}).length;
         var futureExtensions = _.filter(this.roomInfo.futureConstructionSites, function(item){return item.structure == STRUCTURE_EXTENSION}).length;
         var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][controllerLevel];
 
-        console.log('DEBUG: control.Construction - Extensions: (Current: ' + currentExtensions + ') (Planned: ' + futureExtensions + ') (Max: ' + maxExtensions + ')');
+        // console.log('DEBUG: control.Construction - Extensions: (Current: ' + currentExtensions + ') (Planned: ' + futureExtensions + ') (Max: ' + maxExtensions + ')');
 
         if (currentExtensions + futureExtensions < maxExtensions)
         {
@@ -76,7 +80,7 @@ Construction.prototype.PlanNextConstruction = function ()
                 // console.log('DEBUG: control.Construction - whereToBuild:' + whereToBuild);
                 if (PlanBuilding(whereToBuild,STRUCTURE_EXTENSION))
                 {
-                    console.log('control.Construction - Planning an EXTENSION at ' + whereToBuild.pos);
+                    console.log('control.Construction - Planning an [extension] somewhere near ' + whereToBuild.pos);
                 }
             }
         }
@@ -94,6 +98,11 @@ Construction.prototype.PlanNextConstruction = function ()
         // the if(!) construct should therefor only execute the next line if the previous has already been done
         // makes for quick and easy lines of:  if (!planroad(a,b)) if (!planroad(b,c))
 
+        // First things first, Plan a road around the spawn
+        // This will be a high traffic area.
+        // Also, this will prevent the building of other structures right next to the spawn.
+        if (!PlanRoad(spawn, spawn))
+
         // for every source, plan the following roads:
         //      1) road to/from the spawn
         //      2) road to/from the controller
@@ -107,11 +116,9 @@ Construction.prototype.PlanNextConstruction = function ()
                     {} // Empty code block or it will not compile
         }
 
-        // Plan a road between spawn and controller
-        if (!PlanRoad(spawn, controller))
 
         // Pave the areas around the spawn and controller
-		if (!PlanRoad(spawn, spawn))
+		if (!PlanRoad(spawn, controller))
 		    if (!PlanRoad(controller, controller))
             { } // Empty code block or it will not compile
 
