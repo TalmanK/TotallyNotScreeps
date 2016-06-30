@@ -73,7 +73,7 @@ Construction.prototype.PlanNextConstruction = function ()
         {
             var roads = this.room.find(FIND_STRUCTURES, {filter: { structureType: STRUCTURE_ROAD } });
             // console.log('DEBUG: control.Construction - roads:' + roads);
-            if (roads)
+            if (roads && roads.length > 20) //Silly check, make sure at least xx roads are built before adding extensions
             {
                 //Get a random piece of road, we'll try to build there
                 var whereToBuild = roads[Math.floor(Math.random() * roads.length)];
