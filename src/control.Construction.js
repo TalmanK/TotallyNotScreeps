@@ -44,12 +44,12 @@ Construction.prototype.PlanNextConstruction = function ()
     // console.log('control.Construction.PlanNextConstruction: Planning next construction project.');
 
 
-    var spawn  = this.roomInfo.spawns[0];
+    var spawns  = this.roomInfo.spawns;
     var sources = this.roomInfo.sources;
     var controller = this.room.controller;
     var controllerLevel = this.room.controller.level;
 
-
+    var spawn = Game.getObjectById(spawns[0].id)
 
     // Level 2 or higher
     //      - Up to 5 Extensions (Near a road if possible)
@@ -60,10 +60,8 @@ Construction.prototype.PlanNextConstruction = function ()
     {
 
         var currentExtensions = this.room.find(FIND_MY_STRUCTURES, {filter: { structureType: STRUCTURE_EXTENSION }}).length;
-        var futureExtensions = _(this.roomInfo.futureConstructionSites).where({structure: STRUCTURE_EXTENSION});
+        var futureExtensions = _.filter(this.roomInfo.futureConstructionSites, function(item){return item.structure == STRUCTURE_EXTENSION}).length;
         var maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][controllerLevel];
-
-        if (futureExtensions)  {futureExtensions  = futureExtensions.length  } else {futureExtensions = 0};
 
         console.log('DEBUG: control.Construction - Extensions: (Current: ' + currentExtensions + ') (Planned: ' + futureExtensions + ') (Max: ' + maxExtensions + ')');
 
@@ -102,7 +100,7 @@ Construction.prototype.PlanNextConstruction = function ()
         //      3)road around the source location (do we need this?)
         for (let n in sources)
         {
-            source = Game.getObjectById(sources[n].id)
+            var source = Game.getObjectById(sources[n].id)
             if (!PlanRoad(spawn, source))
                 if (!PlanRoad(source, spawn))
                     if (!PlanRoad(source, controller))
