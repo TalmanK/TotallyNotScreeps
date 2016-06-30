@@ -61,7 +61,8 @@ function nextCreep(room)
     if ( nbrUpgraders == 0 ) return 'upgrader';
 
 
-
+    // Rule 99. If you get here, there's nothing I can do for you.
+    return null;
 }
 
 /**
