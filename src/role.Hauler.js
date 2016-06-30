@@ -42,23 +42,23 @@ var roleHauler =
 
             case 'DepositEnergy':
                 nextState = 'MoveToTarget';
-                altState = 'RefuelBuilder';
+                altState = 'RefuelController';
                 break;
 
-            case 'RefuelBuilder':
+            case 'RefuelController':
                 nextState = 'MoveToTarget';
                 altState = 'MoveToClosestSpawner';
                 break;
 
             case 'MoveToClosestSpawner':
                 nextState = 'DepositEnergy';
-                altState = 'RefuelBuilder';
+                altState = 'RefuelController';
                 break;
 
             case 'FindMiner':
                 creep.memory.target = this.findMiner(creep);
                 creep.memory.state = 'MoveToTarget';
-                
+
             default:
                 // No state actions to run.
                 // Just find a new best friend, and move closer

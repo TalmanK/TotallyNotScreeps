@@ -25,6 +25,7 @@ module.exports = {
     UpgradeController       : require('state.UpgradeController'),
     MoveToClosestSpawner    : require('state.MoveToClosestSpawner'),
     RefuelBuilder           : require('state.RefuelBuilder'),
+    RefuelController        : require('state.RefuelController'),
     RangedAttack            : require('state.RangedAttack')
 
 };
