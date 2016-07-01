@@ -46,11 +46,14 @@ Population.prototype.run = function ()
 
     // Try to spawn the next creep in the line.
     // TODO: replace this with the cleaner code once it's ready
+    this.SpawnNewCreep();
+/*
     var nextSpawn = this._getNextSpawn();
     if (nextSpawn)
     {
         this._SpawnNewCreep(nextSpawn); //old code
     }
+*/
 };
 
 
@@ -78,11 +81,13 @@ Population.prototype.SpawnNewCreep = function ()
         if (newCreepRole)
         {
             newCreepDetails = getNewCreepDetailsByRole(newCreepRole);
+
             newCreepDetails.body = getBestBody(newCreepDetails, spawner.room.energyCapacityAvailable);
             newCreepDetails.name = '[' + newCreepDetails.type + '] ' + unitNames.Generate();
+            newCreepDetails.initialmemory.role = newCreepRole;
 
             // We should have everything we need. Try to spawn it.
-            if(spawner.canCreateCreep(newCreepDetails.body,newCreepDetails.name))
+            if(spawner.canCreateCreep(newCreepDetails.body,newCreepDetails.name) == OK)
             {
                 let result = spawner.createCreep(newCreepDetails.body, newCreepDetails.name, newCreepDetails.initialmemory );
                 if (result == OK)
@@ -355,8 +360,10 @@ function getNewCreepDetailsByRole(newCreepRole)
         if (creepTypes[n].roles.indexOf(newCreepRole) > -1 )
         {
             newCreepType = creepTypes[n];
+            break;
         }
     }
+    return newCreepType;
 }
 
 function getBestBody (creepType, maxCost)
@@ -366,10 +373,9 @@ function getBestBody (creepType, maxCost)
 
     for (tier in creepType.bodies)
     {
-        if (getCreepCost(creepType.bodies[tier] <= maxCost))
+        if (getCreepCost(creepType.bodies[tier]) <= maxCost)
         {
             finalBody = creepType.bodies[tier];
-            creepType.type += '-' + tier; //if creepType is passed by reference, this should work.
             break;
         }
     }
@@ -387,7 +393,7 @@ function getCreepCost(bodyParts)
 
 function getFreeSpawner(room)
 {
-    var roomInfo = room.roomInfo;
+    var roomInfo = room.memory.roomInfo;
     var spawner = {};
 
     for (let n in roomInfo.spawns)
