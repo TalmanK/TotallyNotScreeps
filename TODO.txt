@@ -1,0 +1,37 @@
+=== List of future changes ===
+Because I keep forgetting if I don't write it down.
+
+Miners:
+    - If you can't reach the source you want to harvest, give up and try another one.
+        - This should be managed by a work-assignment handler of sorts.
+
+Haulers:
+    - Should prioritise picking up dropped resources that are decaying.
+    - Stop doing the 'favorite miner' thing. it doesn't work well.
+        - Work could be handled by a work-assignment helper as well
+
+Upgraders:
+    - Instead of going back and forth:
+        - If there's a container within range of the controller:
+            - Park your ass next to it.
+            - Upgrade the controller, and refuel from the container.
+            - Haulers will eventually refuel the container.
+
+Builders:
+    - change repair behaviour. Don't stop fixing just because it's no longer urgent, fix it to 100%
+    - walls/ramparts - take an insane amount of HP to fix.
+        - exclude these from normal repair and make a separate way of doing this
+    - Refueling. There has to be a better way.
+
+Extensions:
+    - find a better way to determine where to build one.
+        - close to spawn? no real need.
+        - close to resource? Quicker to refuel, but can cause traffic jams it seems.
+        - Next to the road between spawn and resource sounds nice, if possible.
+
+Military:
+    - stop being a pacifist and start thinking about ways to f*ck sh*t up.
+
+Containers:
+    - always build one near the controller (see upgrader strat)
+    - maybe build one right next to spawn (can a container refuel the spawn?)
