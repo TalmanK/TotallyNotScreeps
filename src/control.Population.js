@@ -317,10 +317,10 @@ function nextCreepRole(room)
     var nbrCreeps = creepTypeDistribution.total;
     var nbrSources = sources.length;
 
-    var nbrMiners = creepTypeDistribution.roles['miner'];
-    var nbrHaulers = creepTypeDistribution.roles['hauler'];
-    var nbrBuilders = creepTypeDistribution.roles['builder'];
-    var nbrUpgraders = creepTypeDistribution.roles['upgrader'];
+    var nbrMiners = creepTypeDistribution.roles['miner'] || 0;
+    var nbrHaulers = creepTypeDistribution.roles['hauler'] || 0;
+    var nbrBuilders = creepTypeDistribution.roles['builder'] || 0;
+    var nbrUpgraders = creepTypeDistribution.roles['upgrader'] || 0;
 
     // Creep spawning decisions.
 
@@ -401,4 +401,5 @@ function getFreeSpawner(room)
         spawner = Game.getObjectById(roomInfo.spawns[n].id);
         if (!spawner.spawning) return spawner
     }
+
 }
