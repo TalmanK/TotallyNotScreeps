@@ -11,7 +11,8 @@ var creepTypeInformation = {
     //
     SCV:
     {
-        roles: ['harvester', 'builder', 'upgrader'],
+        type : 'SCV',
+		roles: ['harvester', 'builder', 'upgrader'],
         initialmemory: {state: 'idle', role: 'none'},
         bodies: {
         	1: [WORK, CARRY, MOVE],
@@ -24,7 +25,8 @@ var creepTypeInformation = {
     // ORE - Official Resource Extracter
     ORE:
     {
-        roles: ['miner'],
+		type : 'ORE',
+		roles: ['miner'],
         initialmemory: {state: 'idle', role: 'none'},
         bodies: {
         	1: [WORK, WORK, MOVE],
@@ -37,7 +39,8 @@ var creepTypeInformation = {
     // FTL - Fast Transport Loader
     FTL:
     {
-        roles: ['hauler'],
+		type : 'FTL',
+		roles: ['hauler'],
         initialmemory: {state: 'idle', role: 'none'},
         bodies: {
         	1: [MOVE, CARRY, CARRY],
@@ -50,7 +53,8 @@ var creepTypeInformation = {
    //AXE - test archer
     AXE:
     {
-        roles: ['archer'],
+		type : 'AXE',
+		roles: ['archer'],
         initialmemory: {state: 'idle', role: 'none'},
         bodies: {
         	1: [RANGED_ATTACK, MOVE, MOVE],
@@ -90,7 +94,7 @@ function getCreepType(creepRole)
 
 function getBestBody (creepType, maxCost)
 {
-	var finalBody = []
+	var finalBody = [];
 	for (let n in creepType.bodies)
 	{
 		if (calculateCreepCost(creepType.bodies[n] <= maxCost)) { finalBody = creepType.bodies[n]};
@@ -98,31 +102,6 @@ function getBestBody (creepType, maxCost)
 	return finalBody;
 }
 
-function calculateCreepCost(bodyParts)
-{
-	/* - From Documentation:
-	 *
- 	 *    BODY PARTS:								BODYPART_COST: {
-	 *    			  					      			  "move": 50,
-	 *    MOVE: "move",								      "work": 100,
-	 *    WORK: "work",								      "attack": 80,
-	 *    CARRY: "carry",				,			      "carry": 50,
-	 *    ATTACK: "attack",							      "heal": 250,
-	 *    RANGED_ATTACK: "ranged_attack"			      "ranged_attack": 150,
-	 *    TOUGH: "tough",							      "tough": 10,
-	 *		HEAL: "heal",															      "claim": 600
-	 *    CLAIM: "claim",															      },
-	 *
-	 */
 
-	var cost = 0;
-
-	for (let n in bodyParts)
-	{
-		cost += BODYPART_COST[bodyParts[n]]
-	}
-
-	return cost;
-};
 
 module.exports = creepTypeInformation;

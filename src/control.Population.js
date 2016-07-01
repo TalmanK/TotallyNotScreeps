@@ -59,15 +59,44 @@ Population.prototype.SpawnNewCreep = function ()
   /*
    * Work in Progress
    *
-   *    1. Figure Out which creep role we need next
-   *    2. Figure Out the properties of the new creep
+   *    1. Figure out which spawn can build the new creep
+   *    2. Figure Out which creep role we need next
+   *    3. Figure Out the properties of the new creep
    *        - based on the role, cost, available energy, etc...
-   *    3. Figure out wich spawn can buid the new creep
    *    4. Give the spawn order (with all the necessary properties)
    *
    */
 
-    let newCreepRole = nextCreepRole(this.room);
+    var unitNames = require('lib.UnitNames');
+    var spawner = {};
+    var newCreepDetails = {};
+
+    spawner = getFreeSpawner(this.room);
+    if (spawner)
+    {
+        let newCreepRole = nextCreepRole(this.room);
+        if (newCreepRole)
+        {
+            newCreepDetails = getNewCreepDetailsByRole(newCreepRole);
+            newCreepDetails.body = getBestBody(newCreepDetails, spawner.room.energyCapacityAvailable);
+            newCreepDetails.name = '[' + newCreepDetails.type + '] ' + unitNames.Generate();
+
+            // We should have everything we need. Try to spawn it.
+            if(spawner.canCreateCreep(newCreepDetails.body,newCreepDetails.name))
+            {
+                let result = spawner.createCreep(newCreepDetails.body, newCreepDetails.name, newCreepDetails.initialmemory );
+                if (result == OK)
+                {
+                    console.log('control.Population:  Spawner [' + spawner.name + ']'
+                                + ' - Spawning new Creep: ' + newCreepDetails.name
+                                + ' - Role: ' + newCreepDetails.role
+                                );
+                }
+                //TODO Add tests if not OK, figure out what went wrong.
+
+            }
+        }
+    }
 };
 
 
@@ -90,7 +119,7 @@ Population.prototype._SpawnNewCreep = function (spawnType)
         for (var n in this.spawns )
         {
 
-            var spawner = this.spawns[n];
+            var spawner = Game.getObjectById(this.spawns[n].id);
             if(spawner.canCreateCreep(bodyparts, name) == OK)
             {
                 spawner.createCreep(bodyparts, name, initialmemory );
@@ -247,8 +276,8 @@ function getCreepTypeDistribution(creepList)
 
     for(var name in creepList)
     {
-        var creepRole = this.creeps[name].memory.role;
-        var creepType = this.creeps[name].name.substring(1,4);
+        var creepRole = creepList[name].memory.role;
+        var creepType = creepList[name].name.substring(1,4);
 
         //Make sure the entries exist:
         if (!distribution.roles[creepRole]) { distribution.roles[creepRole] = 0 }
@@ -315,3 +344,55 @@ function nextCreepRole(room)
     // return null;
 }
 
+
+function getNewCreepDetailsByRole(newCreepRole)
+{
+    var creepTypes = require('tmp.CreepTypes2'); //TODO replace with final once it works
+    var newCreepType = {};
+
+    for (let n in creepTypes)
+    {
+        if (creepTypes[n].roles.indexOf(newCreepRole) > -1 )
+        {
+            newCreepType = creepTypes[n];
+        }
+    }
+}
+
+function getBestBody (creepType, maxCost)
+{
+    var finalBody = [];
+    var tier = '';
+
+    for (tier in creepType.bodies)
+    {
+        if (getCreepCost(creepType.bodies[tier] <= maxCost))
+        {
+            finalBody = creepType.bodies[tier];
+            creepType.type += '-' + tier; //if creepType is passed by reference, this should work.
+            break;
+        }
+    }
+    return finalBody;
+}
+
+function getCreepCost(bodyParts)
+{
+    var cost = 0;
+
+    for (let n in bodyParts)  { cost += BODYPART_COST[bodyParts[n]]}
+
+    return cost;
+}
+
+function getFreeSpawner(room)
+{
+    var roomInfo = room.roomInfo;
+    var spawner = {};
+
+    for (let n in roomInfo.spawns)
+    {
+        spawner = Game.getObjectById(roomInfo.spawns[n].id);
+        if (!spawner.spawning) return spawner
+    }
+}
