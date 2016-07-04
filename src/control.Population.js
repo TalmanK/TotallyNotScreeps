@@ -369,16 +369,24 @@ function getNewCreepDetailsByRole(newCreepRole)
 function getBestBody (creepType, maxCost)
 {
     var finalBody = [];
-    var tier = '';
+    var finalTier = ''; 
 
-    for (tier in creepType.bodies)
+    for (let tier in creepType.bodies)
     {
         if (getCreepCost(creepType.bodies[tier]) <= maxCost)
         {
             finalBody = creepType.bodies[tier];
+            finalTier = tier;
+        }
+        else
+        {
+            // This one is too expensive, the last one saved will have to do
             break;
         }
     }
+
+    // If we get here, finalBody should hold the most expensive we can build.
+    creepType.type += '-' + finalTier;
     return finalBody;
 }
 
