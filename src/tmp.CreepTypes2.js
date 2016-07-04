@@ -3,6 +3,11 @@
  *
  * Premade body types according to role.
  *
+ * Reference: Max energy levels
+ * T1: Spawn has max 300 E
+ * T2: Spawn (300) +  5x Extensions(50) = 550 E
+ * T3: Spawn (300) + 10x Extensions(50) = 800 E
+ * ...
  */
 
 var creepTypeInformation = {
@@ -15,10 +20,9 @@ var creepTypeInformation = {
 		roles: ['harvester', 'builder', 'upgrader'],
         initialmemory: {state: 'idle', role: 'none'},
         bodies: {
-        	1: [WORK, CARRY, MOVE],
-        	2: [WORK, CARRY, MOVE, MOVE],
-        	3: [WORK, CARRY, CARRY, MOVE, MOVE],
-        	4: [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+        	'T1': [WORK, CARRY, MOVE], // 200 E
+        	'T2': [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], //500 E
+        	'T3': [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], //800 E
        	   	}
     },
 
@@ -29,9 +33,9 @@ var creepTypeInformation = {
 		roles: ['miner'],
         initialmemory: {state: 'idle', role: 'none'},
         bodies: {
-        	1: [WORK, WORK, MOVE],
-        	2: [WORK, WORK, MOVE, WORK, WORK, MOVE],
-        	3: [WORK, WORK, MOVE, WORK, WORK, MOVE, WORK, WORK, MOVE],
+        	'T1': [WORK, WORK, MOVE],   // 250 E
+        	'T2': [WORK, WORK, WORK, WORK, MOVE], // 450E
+        	'T3': [WORK, WORK, WORK, WORK, WORK, WORK, MOVE], //650 E
        	   	}
 
     },
@@ -43,10 +47,9 @@ var creepTypeInformation = {
 		roles: ['hauler'],
         initialmemory: {state: 'idle', role: 'none'},
         bodies: {
-        	1: [MOVE, CARRY, CARRY],
-        	2: [MOVE, CARRY, MOVE, CARRY],
-        	3: [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY],
-        	4: [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY],
+        	'T1': [MOVE, CARRY, MOVE, CARRY], // 200 E (100 carry)
+        	'T2': [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY], //500 E (250 carry)
+        	'T3': [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY], // 800 E (400 carry)
        	   	}
     },
 
@@ -57,51 +60,12 @@ var creepTypeInformation = {
 		roles: ['archer'],
         initialmemory: {state: 'idle', role: 'none'},
         bodies: {
-        	1: [RANGED_ATTACK, MOVE, MOVE],
-        	2: [RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE],
-        	3: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE],
-        	4: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE],
+        	'T1': [TOUGH, RANGED_ATTACK, MOVE, MOVE],  // 260 E, 10 DPS, 400 HP, Move 1/1
+        	'T2': [TOUGH, MOVE, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE], // 460 E , 20 DPS, 600HP, Move 1/1
+        	'T3': [TOUGH, MOVE, TOUGH, MOVE, TOUGH, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK, MOVE], //780 E, 30 DPS, 1200 HP, Move 1/1
        	   	}
     },
 
 };
-
-creepTypeInformation.getCreepTypeInformation = function (creepRole, maxCost)
-{
-	var creepType = getCreepType(creepRole);
-
-	creepType.body = getBestBody(creepType, maxCost);
-
-	delete creepType.bodies;
-	delete creepType.roles;
-
-	return creepType;
-};
-
-function getCreepType(creepRole)
-{
-	var creepTypes = require('tmp.CreepTypes2');
-
-	for (let n in creepTypes)
-	{
-		if (creepTypes[n].roles.includes(creepRole))
-		{
-			return creepTypes[n]
-		}
-	}
-
-}
-
-function getBestBody (creepType, maxCost)
-{
-	var finalBody = [];
-	for (let n in creepType.bodies)
-	{
-		if (calculateCreepCost(creepType.bodies[n] <= maxCost)) { finalBody = creepType.bodies[n]};
-	}
-	return finalBody;
-}
-
-
 
 module.exports = creepTypeInformation;
