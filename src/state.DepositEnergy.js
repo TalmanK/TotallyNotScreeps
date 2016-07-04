@@ -22,7 +22,7 @@ run: function (creep, newState, altState)
     });
 
     // If no valid spawns, look for extensions
-    if(targets.length > 0)
+    if(targets.length == 0)
     {
         targets = creep.room.find(FIND_STRUCTURES,
             {
@@ -34,7 +34,7 @@ run: function (creep, newState, altState)
     }
 
     // If no valid extensions, look for towers
-    if(targets.length > 0)
+    if(targets.length == 0)
     {
         targets = creep.room.find(FIND_STRUCTURES,
             {
@@ -46,13 +46,13 @@ run: function (creep, newState, altState)
     }
 
     // If no valid towers, look for containers (beware the different store)
-    if(targets.length > 0)
+    if(targets.length == 0)
     {
         targets = creep.room.find(FIND_STRUCTURES,
             {
                 filter: (structure) =>
                 {
-                    return (structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity;
+                    return (structure.structureType == STRUCTURE_CONTAINER && _.sum(structure.store) < structure.storeCapacity);
                 }
             });
     }
