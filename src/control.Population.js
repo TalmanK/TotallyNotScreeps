@@ -83,7 +83,7 @@ Population.prototype.SpawnNewCreep = function ()
             newCreepDetails = getNewCreepDetailsByRole(newCreepRole);
 
             newCreepDetails.body = getBestBody(newCreepDetails, spawner.room.energyCapacityAvailable);
-            newCreepDetails.name = '[' + newCreepDetails.type + '] ' + unitNames.Generate();
+            newCreepDetails.name = '[' + newCreepDetails.type + '-' + newCreepDetails.tier + '] ' + unitNames.Generate();
             newCreepDetails.initialmemory.role = newCreepRole;
 
             // We should have everything we need. Try to spawn it.
@@ -369,7 +369,7 @@ function getNewCreepDetailsByRole(newCreepRole)
 function getBestBody (creepType, maxCost)
 {
     var finalBody = [];
-    var finalTier = ''; 
+    var finalTier = '';
 
     for (let tier in creepType.bodies)
     {
@@ -386,7 +386,7 @@ function getBestBody (creepType, maxCost)
     }
 
     // If we get here, finalBody should hold the most expensive we can build.
-    creepType.type += '-' + finalTier;
+    creepType.tier = finalTier;
     return finalBody;
 }
 
