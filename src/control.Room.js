@@ -93,17 +93,13 @@ RoomHandler.prototype.getRoomInfo = function (room)
 };
 
 
-RoomHandler.prototype.Report = function (room)
+RoomHandler.prototype.Report = function ()
 {
-    // Build a population Report
+    // Build a Room Status Report
     var report = new Array;
 
-    //Header -- This should REALLY be in a separate entity. 
-    // //Has nothing to do with room
-    report.push('---------- GAME Report ----------');
-    report.push('- Game Time : ' + Game.time );
-    report.push('- CPU: Limit: ' + Game.cpu.limit + ' | Max CPU/Tick : ' + Game.cpu.tickLimit + ' | Saved CPU : ' + Game.cpu.bucket);
-    // report.push('---------------------------------');
+    report.push('---------- ROOM Report: [' + this.room.name + '] ----------');
+    report.push('- Controller Level: xxx Progress: (yyy / zzz)');
 
     //Population Report
     report = report.concat(this.populationController.Report());
