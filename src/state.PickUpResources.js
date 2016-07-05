@@ -1,16 +1,17 @@
 /*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
+ * state.PickUpResources
  *
- * You can import it from another modules like this:
- * var mod = require('state.PickUpResources');
- * mod.thing == 'a thing'; // true
+ * go find dropped resources (usually by the miner creep)
+ * pick up as much as you can carry (or as much as is available)
  */
 
 module.exports = {
 run: function (creep, newState, altState)
 {
+    //Todo: find another way to locate the resources. Need to prioritize decaying heaps.
+
     var target = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
+    
     if(target)
     {
         var result = creep.pickup(target);
@@ -20,21 +21,25 @@ run: function (creep, newState, altState)
         }
         else if( result == OK)
         {
-            // We picked up something, usualy this means we're full or there's nothing left here.
-            // Don't be an asshole and hog the spot, go do what you need to do.
-            creep.memory.state = newState
+            // We picked up something.
+            // Usualy this means either:
+            //      a) we're full
+            //      or
+            //      b) there's nothing left here.
+            // Even if we're not 100% full, Don't be an asshole and hog the spot, go do what you need to do.
+            creep.memory.state = newState;
             creep.say(creep.memory.state);
         }
     }
     else
     {
         // No valid targets for pickup, perform alternate tasks
-        creep.memory.state = altState
+        creep.memory.state = altState;
         creep.say(creep.memory.state);
     }
     if(creep.carry.energy == creep.carryCapacity)
     {
-        creep.memory.state = newState
+        creep.memory.state = newState;
         creep.say(creep.memory.state);
     }
 }

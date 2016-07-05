@@ -109,7 +109,7 @@ Construction.prototype.PlanNextConstruction = function ()
         //      3)road around the source location (do we need this?)
         for (let n in sources)
         {
-            var source = Game.getObjectById(sources[n].id)
+            var source = Game.getObjectById(sources[n].id);
             if (!PlanRoad(spawn, source))
                 if (!PlanRoad(source, spawn))
                     if (!PlanRoad(source, controller))
