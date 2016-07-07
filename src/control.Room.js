@@ -99,7 +99,10 @@ RoomHandler.prototype.Report = function ()
     var report = new Array;
 
     report.push('---------- ROOM Report: [' + this.room.name + '] ----------');
-    report.push('- Controller Level: xxx Progress: (yyy / zzz)');
+    var controllerProgress = Math.floor( 100 * this.room.controller.progress / this.room.controller.progressTotal);
+    report.push('- Controller Level: ' + this.room.controller.level + ' Progress: (' + controllerProgress + ' %)');
+    report.push('- Max Energy for summons: ' + this.room.energyCapacityAvailable);
+    
 
     //Population Report
     report = report.concat(this.populationController.Report());
